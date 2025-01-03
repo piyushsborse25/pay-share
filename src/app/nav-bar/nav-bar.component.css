@@ -1,0 +1,144 @@
+/* General Layout */
+mat-sidenav-container {
+    height: 100vh;
+}
+
+.menu-drawer {
+    height: 100vh;
+    width: 20vw;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.15) 100%),
+        radial-gradient(at top center, rgba(255, 255, 255, 0.40) 0%, rgba(0, 0, 0, 0.40) 120%) #989898;
+    background-blend-mode: multiply, multiply;
+}
+
+/* Menu Icon Control */
+.menu-drawer .menu-ico-drawer {
+    padding: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+}
+
+.menu .menu-ico {
+    padding: 1rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+}
+
+/* Menu List */
+.menu-drawer i {
+    color: white;
+}
+
+.menu-drawer .menu-list {
+    padding: 2rem 0rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.menu-drawer .menu-list ul {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: start;
+}
+
+.menu-drawer .menu-list ul li {
+    color: white;
+    width: 100%;
+    height: 50px;
+    padding: 1rem;
+    border-bottom: 1.5px dashed white;
+    text-decoration: none;
+    list-style: none;
+}
+
+.menu-drawer .menu-list ul li:hover {
+    background-image: linear-gradient(to left, #64605a 0%, #635854 100%);
+    transform: scale(1.02);
+    opacity: 0.8;
+}
+
+/* Toolbar and Extras */
+.tool-bar-space {
+    margin-bottom: 4rem;
+}
+
+mat-toolbar {
+    position: fixed;
+    z-index: 2;
+}
+
+mat-sidenav {
+    border: none;
+}
+
+.nav-bar-extras {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: center;
+}
+
+.nav-bar-extras ul {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+.nav-bar-extras ul a {
+    color: black;
+    width: 100px;
+    height: 100%;
+    display: flex;
+    text-decoration: none;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: medium;
+    padding: 0.5rem 1rem;
+}
+
+.nav-bar-extras ul a:hover {
+    opacity: 0.8;
+    transform: scale(1.02);
+    background-color: antiquewhite;
+}
+
+/* Close Icon Animation */
+.close-ico {
+    animation: close-ani 0.5s forwards ease;
+}
+
+@keyframes close-ani {
+    to {
+        transform: rotate(90deg);
+    }
+}
+
+/* Router Link Active */
+.router-link-active {
+    background-image: linear-gradient(to left, #64605a 0%, #635854 100%);
+    font-size: large;
+}
+
+.outlet-space {
+    min-height: 80%;
+}
