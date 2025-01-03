@@ -28,27 +28,38 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Setup Configuration
 
-1. Install FontAwesome
+### 1. **Install FontAwesome**
 FontAwesome is a popular icon library. To install it:
 
+```bash
 npm install @fortawesome/fontawesome-free
+```
 
 You also need to add the CSS for FontAwesome to your `angular.json` file:
+
+```json
 "styles": [
   "./node_modules/@fortawesome/fontawesome-free/css/all.min.css"
 ]
+```
 
 Alternatively, in your component's CSS, you can also import FontAwesome as:
-@import "@fortawesome/fontawesome-free/css/all.css";
 
-2. Install Angular FontAwesome
+```scss
+@import "@fortawesome/fontawesome-free/css/all.css";
+```
+
+### 2. **Install Angular FontAwesome**
 
 This package allows you to use FontAwesome icons as Angular components.
 
+```bash
 npm install @fortawesome/angular-fontawesome
+```
 
 After installing, make sure to import the `FontAwesomeModule` in your module (`app.module.ts`):
 
+```typescript
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
@@ -58,30 +69,43 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   ]
 })
 export class AppModule { }
+```
 
-3. Install Bootstrap
+### 3. **Install Bootstrap**
+
 Bootstrap provides responsive design and UI components.
 
 To install it:
+
+```bash
 npm install bootstrap --save
+```
 
 Add the Bootstrap CSS and JavaScript files to your `angular.json` file:
 
+```json
 "styles": [
   "./node_modules/bootstrap/dist/css/bootstrap.min.css"
 ],
 "scripts": [
   "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
 ]
+```
 
 This ensures that Bootstrap's styles and JavaScript (like the dropdown or modal) will work seamlessly in your application.
 
-4. TypeRoots for Angular Material
+### 4. **TypeRoots for Angular Material**
 
 This step isn't required unless you're customizing Angular Material typings or configurations. Normally, Angular Material is used by importing `MatModule` into your app module.
 
 However, you mentioned:
 
+```json
 "typeRoots": ["./node_modules/@angular/material"]
+```
 
 This setting is used to define the paths for type declarations. It might be necessary if you have custom typings or if you're working with specific types from Angular Material.
+
+### Conclusion
+
+Once you've run these `npm install` commands and added the configurations to `angular.json` and `app.module.ts`, you can start using FontAwesome icons and Bootstrap in your Angular project. Let me know if you need further assistance with this setup!
