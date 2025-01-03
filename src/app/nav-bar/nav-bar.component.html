@@ -1,63 +1,66 @@
 <mat-sidenav-container class="nav-bar" autosize>
-    <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
-        <div class="menu-drawer">
-            <div class="menu-ico-drawer">
-                <i class="fa-solid fa-xmark fa-2x close-ico" (click)="sidenav.toggle()"></i>
-            </div>
-            <div class="menu-list">
-                <ul>
-                    <li [routerLink]="['/home']" routerLinkActive="router-link-active">Home</li>
-                    <li [routerLink]="['/manage']" routerLinkActive="router-link-active">Manage</li>
-                    <li [routerLink]="['/about']" routerLinkActive="router-link-active">About Us</li>
-                    <li [routerLink]="['/contact']" routerLinkActive="router-link-active">Contact Us</li>
-                </ul>
-            </div>
+  <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
+    <div class="menu-drawer">
+      <div class="menu-ico-drawer">
+        <i class="fa-solid fa-xmark fa-2x close-ico" (click)="sidenav.toggle()"></i>
+      </div>
+      <div class="menu-list">
+        <ul>
+          <li [routerLink]="['/home']" routerLinkActive="router-link-active">Home</li>
+          <li [routerLink]="['/manage']" routerLinkActive="router-link-active">Manage</li>
+          <li [routerLink]="['/about']" routerLinkActive="router-link-active">About Us</li>
+          <li [routerLink]="['/contact']" routerLinkActive="router-link-active">Contact Us</li>
+        </ul>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="secondary">
+      <div class="logo">
+        <div *ngIf="!sidenav.opened" class="menu-ico" (click)="sidenav.toggle()">
+          <i class="fa-solid fa-bars fa-xl"></i>
         </div>
-    </mat-sidenav>
+        <img class="mx-3" src="../../assets/images/logo-payshare.png" alt="logo" width="75px">
+      </div>
+      <div class="nav-bar-extras">
+        <ul>
+          <a [mat-menu-trigger-for]="extras">Customize</a>
+          <a routerLink="/catalogue">Catalogue</a>
+          <a routerLink="/favourites">Favorites</a>
+          <a [mat-menu-trigger-for]="dm">Manager</a>
+          <a>Support</a>
+        </ul>
+        <ul>
+          <a class="user">
+            <i class="fa-solid fa-user-tie fa-xl"></i>
+          </a>
+          <a class="user">
+            <i class="fa-solid fa-address-book fa-xl"></i>
+            <span>&nbsp;&nbsp;Admin</span>
+          </a>
+        </ul>
+      </div>
 
-    <mat-sidenav-content>
-        <mat-toolbar color="secondary">
-            <div *ngIf="!sidenav.opened" class="menu-ico" (click)="sidenav.toggle()">
-                <i class="fa-solid fa-bars fa-xl"></i>
-            </div>
-            <div class="nav-bar-extras">
-                <ul>
-                    <a [mat-menu-trigger-for]="extras">Customize</a>
-                    <a routerLink="/catalogue">Catalogue</a>
-                    <a routerLink="/favourites">Favorites</a>
-                    <a [mat-menu-trigger-for]="dm">Manager</a>
-                    <a>Support</a>
-                </ul>
-                <ul>
-                    <a class="user">
-                        <i class="fa-solid fa-user-tie fa-xl"></i>
-                    </a>
-                    <a class="user">
-                        <i class="fa-solid fa-address-book fa-xl"></i>
-                        <span>&nbsp;&nbsp;Admin</span>
-                    </a>
-                </ul>
-            </div>
+      <mat-menu #extras>
+        <button mat-menu-item [routerLink]="['/create']">Add Course</button>
+        <button mat-menu-item [routerLink]="['/']">Remove Course</button>
+      </mat-menu>
 
-            <mat-menu #extras>
-                <button mat-menu-item [routerLink]="['/create']">Add Course</button>
-                <button mat-menu-item [routerLink]="['/']">Remove Course</button>
-            </mat-menu>
+      <mat-menu #dm>
+        <button mat-menu-item [routerLink]="['/dm-add-bill']">Add Bill</button>
+        <button mat-menu-item [routerLink]="['/dm-bill-list']">Bills</button>
+      </mat-menu>
+    </mat-toolbar>
 
-            <mat-menu #dm>
-                <button mat-menu-item [routerLink]="['/dm-add-bill']">Add Bill</button>
-                <button mat-menu-item [routerLink]="['/dm-bill-list']">Bills</button>
-            </mat-menu>
-        </mat-toolbar>
-
-        <div class="tool-bar-space"></div>
-        <div class="outlet-space">
-            <router-outlet></router-outlet>
-        </div>
-        <app-footer></app-footer>
-    </mat-sidenav-content>
+    <div class="tool-bar-space"></div>
+    <div class="outlet-space">
+      <router-outlet></router-outlet>
+    </div>
+    <app-footer></app-footer>
+  </mat-sidenav-content>
 </mat-sidenav-container>
 
 <router-outlet name="rate">
-    
+
 </router-outlet>

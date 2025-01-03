@@ -11,6 +11,13 @@ mat-sidenav-container {
     background-blend-mode: multiply, multiply;
 }
 
+.logo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+}
+
 /* Menu Icon Control */
 .menu-drawer .menu-ico-drawer {
     padding: 1rem;
@@ -20,7 +27,8 @@ mat-sidenav-container {
     text-align: center;
 }
 
-.menu .menu-ico {
+.logo .menu-ico {
+    color: #10b5a3;
     padding: 1rem;
     display: flex;
     justify-content: flex-start;
@@ -96,6 +104,7 @@ mat-sidenav {
 
 .nav-bar-extras ul {
     height: 100%;
+    padding-left: 0.5rem;
     margin: 0;
     display: flex;
     justify-content: center;
