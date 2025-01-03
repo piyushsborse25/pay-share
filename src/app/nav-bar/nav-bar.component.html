@@ -1,15 +1,15 @@
 <mat-sidenav-container class="nav-bar" autosize>
   <mat-sidenav #sidenav mode="over" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
-    <div class="menu-drawer">
+    <div class="menu-drawer" style="background-color: #1c2331;">
       <div class="menu-ico-drawer">
-        <i class="fa-solid fa-xmark fa-2x close-ico" (click)="sidenav.toggle()"></i>
+        <i class="fa-solid fa-xmark fa-2x close-ico" (click)="sidenav.toggle()" style="color: #10b5a3;"></i>
       </div>
       <div class="menu-list">
         <ul>
-          <li [routerLink]="['/home']" routerLinkActive="router-link-active">Home</li>
-          <li [routerLink]="['/manage']" routerLinkActive="router-link-active">Manage</li>
-          <li [routerLink]="['/about']" routerLinkActive="router-link-active">About Us</li>
-          <li [routerLink]="['/contact']" routerLinkActive="router-link-active">Contact Us</li>
+          <li [routerLink]="['/home']" routerLinkActive="router-link-active" class="menu-item">Home</li>
+          <li [routerLink]="['/manage']" routerLinkActive="router-link-active" class="menu-item">Manage</li>
+          <li [routerLink]="['/about']" routerLinkActive="router-link-active" class="menu-item">About Us</li>
+          <li [routerLink]="['/contact']" routerLinkActive="router-link-active" class="menu-item">Contact Us</li>
         </ul>
       </div>
     </div>
@@ -61,6 +61,4 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 
-<router-outlet name="rate">
-
-</router-outlet>
+<router-outlet name="rate"></router-outlet>
