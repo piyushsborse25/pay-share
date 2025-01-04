@@ -121,6 +121,17 @@
   margin-bottom: 10px;
 }
 
+.save {
+  width: 120px;
+  margin-top: 1rem;
+  align-self: flex-end;
+}
+
+.save .btn {
+  width: 120px;
+  padding: 10px;
+}
+
 /* Optional: Add responsive design */
 @media (max-width: 768px) {
   .container {
