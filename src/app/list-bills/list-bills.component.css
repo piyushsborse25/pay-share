@@ -1,0 +1,41 @@
+.container-fluid {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  width: 85vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: scroll;
+  padding: 0;
+}
+
+.container mat-paginator {
+  width: 100%;
+}
+
+.container mat-paginator {
+  border: 1px whitesmoke solid;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.save-hover {
+  scale: 1.2;
+  color: green;
+}
+
+.delete-hover {
+  scale: 1.2;
+  color: red;
+}
+
+mat-form-field {
+  pointer-events: none;
+  opacity: 0.8;
+  margin-top: 1rem;
+}

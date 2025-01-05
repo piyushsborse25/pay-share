@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { BillService } from '../services/bill.service';
-import { Bill } from '../entities/bill';
+import { Bill } from '../entities/Bill';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { NotifyService } from '../services/notify.service';
 
