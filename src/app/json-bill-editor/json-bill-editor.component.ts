@@ -30,6 +30,7 @@ export class JsonBillEditorComponent implements OnInit {
       }
     } catch (error) {
       this.notify.openSnackBar('Invalid JSON');
+      this.jsonData = undefined;
     }
   }
 

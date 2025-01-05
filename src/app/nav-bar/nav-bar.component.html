@@ -25,10 +25,8 @@
       </div>
       <div class="nav-bar-extras">
         <ul>
-          <a [mat-menu-trigger-for]="extras">Customize</a>
-          <a routerLink="/catalogue">Catalogue</a>
-          <a routerLink="/favourites">Favorites</a>
-          <a [mat-menu-trigger-for]="dm">Manager</a>
+          <a [mat-menu-trigger-for]="dm">Manage</a>
+          <a>Customize</a>
           <a>Support</a>
         </ul>
         <ul>
@@ -42,14 +40,9 @@
         </ul>
       </div>
 
-      <mat-menu #extras>
-        <button mat-menu-item [routerLink]="['/create']">Add Course</button>
-        <button mat-menu-item [routerLink]="['/']">Remove Course</button>
-      </mat-menu>
-
       <mat-menu #dm>
-        <button mat-menu-item [routerLink]="['/dm-add-bill']">Add Bill</button>
-        <button mat-menu-item [routerLink]="['/dm-bill-list']">Bills</button>
+        <button mat-menu-item [routerLink]="['/manage/import-bill']">Import Bill</button>
+        <button mat-menu-item [routerLink]="['/manage/list-bills']">List Bills</button>
       </mat-menu>
     </mat-toolbar>
 
