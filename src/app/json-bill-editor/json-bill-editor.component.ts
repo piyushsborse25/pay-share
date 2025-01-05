@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { BillService } from '../services/bill.service';
 import { Bill } from '../entities/bill';
-import { HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { NotifyService } from '../services/notify.service';
 
 @Component({
   selector: 'app-json-bill-editor',
@@ -17,7 +18,7 @@ export class JsonBillEditorComponent implements OnInit {
   jsonData: Bill;
   jsonString: string;
 
-  constructor(public billService: BillService) {}
+  constructor(public billService: BillService, public notify: NotifyService) {}
 
   ngOnInit(): void {}
 
@@ -27,7 +28,9 @@ export class JsonBillEditorComponent implements OnInit {
         this.jsonData = JSON.parse(this.jsonString);
         this.jsonString = JSON.stringify(this.jsonData, null, 2);
       }
-    } catch (error) {}
+    } catch (error) {
+      this.notify.openSnackBar('Invalid JSON');
+    }
   }
 
   save() {
@@ -36,6 +39,9 @@ export class JsonBillEditorComponent implements OnInit {
       .subscribe((result: Bill) => {
         this.jsonData = result;
         this.jsonString = JSON.stringify(this.jsonData, null, 2);
+        this.notify.openSnackBar('Bill Saved Successfully');
+      }, (error: HttpErrorResponse) => {
+        this.notify.openSnackBar(error.error['errorMessage']);
       });
   }
 }

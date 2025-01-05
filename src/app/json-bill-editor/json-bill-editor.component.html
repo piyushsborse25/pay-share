@@ -1,19 +1,19 @@
 <div class="flex-container">
   <div class="container">
     <div class="card">
-      <h2 class="card-title">JSON Editor & Viewer</h2>
+      <h2 class="card-title">Bill Editor & Viewer</h2>
 
       <div class="editor-viewer-container">
         <!-- JSON Editor Section (Left) -->
         <div class="json-editor">
-          <h3>Edit JSON</h3>
+          <h3>Edit Bill</h3>
           <textarea [(ngModel)]="jsonString" (focusout)="updateJsonData()" [rows]="20" class="json-textarea"
             placeholder="Edit the JSON here..."></textarea>
         </div>
 
         <!-- JSON Viewer Section (Right) -->
         <div class="json-viewer">
-          <h3>JSON Viewer</h3>
+          <h3>Bill Viewer</h3>
           <ngx-json-viewer [json]="jsonData === undefined? {}: jsonData" [expanded]="true"></ngx-json-viewer>
         </div>
       </div>
