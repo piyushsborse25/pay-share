@@ -87,7 +87,7 @@
     <!-- Items Table Section -->
     <div class="items">
       <div class="container mat-elevation-z8">
-        <table mat-table [dataSource]="bill?.items" matSort (matSortChange)="announceSortChange($event)">
+        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
           <!-- Select Column -->
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>

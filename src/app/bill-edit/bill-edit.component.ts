@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -68,7 +68,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  dataSource: MatTableDataSource<Item> = null;
+  dataSource: MatTableDataSource<Item>;
   selection = new SelectionModel<Item>(true, []);
   displayedColumns = ['select', 'itemId', 'itemName', 'itemPrice', 'people'];
 
@@ -78,21 +78,21 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     private notify: NotifyService,
     private billService: BillService,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private refresh: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.route.data.pipe(map((data) => data['bill'])).subscribe(
       (res: Bill) => {
         this.bill = res;
-        this.dataSource = new MatTableDataSource<Item>(this.bill.items);
-        this.dataSource.paginator = this.paginator;
       },
       (error: HttpErrorResponse) => {}
     );
   }
 
   ngAfterViewInit(): void {
+    this.dataSource = new MatTableDataSource<Item>(this.bill.items);
     this.dataSource.paginator = this.paginator;
   }
 
