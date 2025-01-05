@@ -120,7 +120,7 @@ export class ListBillsComponent implements AfterViewInit {
   }
 
   edit(billId: any) {
-    throw new Error('Method not implemented.');
+    this.router.navigateByUrl(`/edit-bill/${billId}`);
   }
 
   isAllSelected(): boolean {

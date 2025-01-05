@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { JsonBillEditorComponent } from './json-bill-editor/json-bill-editor.component';
 import { ListBillsComponent } from './list-bills/list-bills.component';
+import { BillEditComponent } from './bill-edit/bill-edit.component';
+import { billEditResolver } from './resolvers/bill-edit/bill-edit.resolver';
 
 export const routes: Routes = [
   {
@@ -20,5 +22,12 @@ export const routes: Routes = [
         component: ListBillsComponent,
       }
     ],
+  },
+  {
+    path: 'edit-bill/:billId',
+    component: BillEditComponent,
+    resolve: {
+      bill: billEditResolver
+    }
   },
 ];

@@ -13,6 +13,10 @@ export class BillService {
   }
 
   public getAll() {
-    return this.http.get('http://localhost:8086/bill-service/bills');
+    return this.http.get<Bill[]>('http://localhost:8086/bill-service/bills');
+  }
+
+  public getBillById(billId: number) {
+    return this.http.get<Bill>(`http://localhost:8086/bill-service/bill/${billId}`);
   }
 }

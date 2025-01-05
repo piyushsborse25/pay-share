@@ -4,5 +4,5 @@ export interface Item {
   quantity: number;
   rate: number;
   value: number;
-  participants: any[];
+  participants: string[];
 }
