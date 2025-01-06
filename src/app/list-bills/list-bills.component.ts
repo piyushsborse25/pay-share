@@ -63,7 +63,7 @@ export class ListBillsComponent implements AfterViewInit, OnInit {
     'billDate',
     'totalItems',
     'totalQuantity',
-    'totalValue'
+    'totalValue',
   ];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -82,7 +82,9 @@ export class ListBillsComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+    if(this.dataSource !== undefined) {
+      this.dataSource.paginator = this.paginator;
+    }
   }
 
   private loadBills(): void {
@@ -90,6 +92,7 @@ export class ListBillsComponent implements AfterViewInit, OnInit {
       (result: Bill[]) => {
         this.bills = result;
         this.dataSource = new MatTableDataSource<Bill>(this.bills);
+        this.dataSource.paginator = this.paginator;
       },
       (error: HttpErrorResponse) => {}
     );
@@ -99,7 +102,7 @@ export class ListBillsComponent implements AfterViewInit, OnInit {
     if (this.paginator !== undefined) {
       return this.paginator.pageIndex * this.paginator.pageSize + (i + 1);
     }
-    return (i + 1);
+    return i + 1;
   }
 
   announceSortChange(sortState: Sort): void {
@@ -129,8 +132,10 @@ export class ListBillsComponent implements AfterViewInit, OnInit {
   }
 
   edit() {
-    if(this.selection.selected.length == 1) {
-      this.router.navigateByUrl(`/edit-bill/${this.selection.selected[0].billId}`);
+    if (this.selection.selected.length == 1) {
+      this.router.navigateByUrl(
+        `/edit-bill/${this.selection.selected[0].billId}`
+      );
     }
   }
 
