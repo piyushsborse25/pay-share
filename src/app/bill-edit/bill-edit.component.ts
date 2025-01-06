@@ -40,7 +40,8 @@ import { NotifyService } from '../services/notify.service';
 import { BillService } from '../services/bill.service';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { Split } from '../entities/split';
+import { Split } from '../entities/Split';
+import { openItemViewDialog } from '../dialogs/item-list/item-list.component';
 
 @Component({
   selector: 'app-bill-edit',
@@ -62,7 +63,7 @@ import { Split } from '../entities/split';
     MatDatepickerModule,
     MatChipsModule,
     MatAutocompleteModule,
-    MatToolbarModule
+    MatToolbarModule,
   ],
   templateUrl: './bill-edit.component.html',
   styleUrl: './bill-edit.component.css',
@@ -70,7 +71,7 @@ import { Split } from '../entities/split';
 export class BillEditComponent implements AfterViewInit, OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   bill: Bill;
-  split: Split[];
+  splits: Split[];
   participants = new Set<string>();
   paidByUser: string = null;
 
@@ -130,7 +131,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     if (this.paginator !== undefined) {
       return this.paginator.pageIndex * this.paginator.pageSize + (i + 1);
     }
-    return (i + 1);
+    return i + 1;
   }
 
   announceSortChange($event: Sort): void {}
@@ -151,7 +152,6 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     } else {
       this.selection.select(...this.dataSource.data);
     }
-    console.log(this.selection.selected);
   }
 
   toggleSingle(dmItem: Item): void {
@@ -168,7 +168,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
 
   generateSplit(): void {
     this.billService.getBillSplit(this.bill.billId).subscribe((res) => {
-      this.split = res;
+      this.splits = res;
     });
   }
 
@@ -181,11 +181,11 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   }
 
   openItemDailog(split: any): void {
-    // openItemViewDialog(this.dialog, this.bill.billId, split).subscribe(
-    //   (res) => {
-    //     console.log(res);
-    //   }
-    // );
+    openItemViewDialog(this.dialog, this.bill.billId, split).subscribe(
+      (res) => {
+        console.log(res);
+      }
+    );
   }
 
   save() {

@@ -168,18 +168,18 @@
     </div>
 
     <!-- Split Results Section -->
-    <div class="result" *ngIf="split">
-      <div class="card-container" *ngIf="split">
-        <div class="card" *ngFor="let item of split">
+    <div class="result" *ngIf="splits">
+      <div class="card-container" *ngIf="splits">
+        <div class="card" *ngFor="let split of splits" (click)="openItemDailog(split)">
           <div class="card-icon">
             <i class="fa-regular fa-circle-user"></i>
           </div>
           <div class="card-content">
-            <h3 class="card-title">{{ item.name || 'N/A' }}</h3>
-            <p class="card-detail"><strong>Items: {{ item.itemcount || 0 }}</strong></p>
+            <h3 class="card-title">{{ split.name || 'N/A' }}</h3>
+            <p class="card-detail"><strong>Items: {{ split.itemcount || 0 }}</strong></p>
             <p class="card-detail">
               <strong>Split:&nbsp;</strong>
-              <span class="split-amount">₹ {{ item.split || 0 }}</span>
+              <span class="split-amount">₹ {{ split.split || 0 }}</span>
             </p>
           </div>
         </div>

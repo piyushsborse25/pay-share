@@ -6,7 +6,6 @@
 
 .container-wrap {
   width: 100vw;
-  /* height: 100vw; */
   padding: 4rem;
   display: flex;
   justify-content: center;
@@ -98,7 +97,7 @@ mat-toolbar button {
 .result {
   grid-area: result;
   display: flex;
-  padding: 0.5rem;
+  padding: 1rem 0.4rem;
   justify-content: flex-start;
   align-items: flex-start;
   text-align: center;
@@ -110,10 +109,11 @@ mat-toolbar button {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
-  background-color: #f9f9f9; /* Light background for the grid */
+  background-color: #f9f9f9;
 }
 
 .card {
+  cursor: pointer;
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -132,7 +132,7 @@ mat-toolbar button {
 
 .card-icon {
   font-size: 3rem;
-  color: #10b5a3; /* Teal color */
+  color: #10b5a3;
   margin-bottom: 1rem;
 }
 
