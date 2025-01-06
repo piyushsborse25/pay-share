@@ -1,4 +1,10 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -33,6 +39,7 @@ import { Item } from '../entities/Item';
 import { NotifyService } from '../services/notify.service';
 import { BillService } from '../services/bill.service';
 import { CommonModule } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-bill-edit',
@@ -54,6 +61,7 @@ import { CommonModule } from '@angular/common';
     MatDatepickerModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatToolbarModule
   ],
   templateUrl: './bill-edit.component.html',
   styleUrl: './bill-edit.component.css',
@@ -86,13 +94,14 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     this.route.data.pipe(map((data) => data['bill'])).subscribe(
       (res: Bill) => {
         this.bill = res;
+        this.participants = new Set<string>(this.bill.participants);
+        this.dataSource = new MatTableDataSource<Item>(this.bill.items);
       },
       (error: HttpErrorResponse) => {}
     );
   }
 
   ngAfterViewInit(): void {
-    this.dataSource = new MatTableDataSource<Item>(this.bill.items);
     this.dataSource.paginator = this.paginator;
   }
 
@@ -113,6 +122,13 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     }
 
     return dateStr;
+  }
+
+  getItemIdx(i: number): number {
+    if (this.paginator !== undefined) {
+      return this.paginator.pageIndex * this.paginator.pageSize + (i + 1);
+    }
+    return (i + 1);
   }
 
   announceSortChange($event: Sort): void {}
@@ -181,7 +197,15 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   }
 
   save() {
-    this.bill.participants = new Set([...this.participants]);
+    this.bill.participants = [...this.participants];
     console.log(this.bill);
+    this.billService.save(this.bill).subscribe(
+      (result: Bill) => {
+        this.notify.openSnackBar('Bill Saved Successfully');
+      },
+      (error: HttpErrorResponse) => {
+        this.notify.openSnackBar(error.error['errorMessage']);
+      }
+    );
   }
 }

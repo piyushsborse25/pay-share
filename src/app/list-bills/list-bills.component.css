@@ -11,11 +11,11 @@
   padding: 0;
 }
 
-.container mat-paginator {
+.container-fluid mat-paginator {
   width: 100%;
 }
 
-.container mat-paginator {
+.container-fluid mat-paginator {
   border: 1px whitesmoke solid;
 }
 
@@ -35,7 +35,6 @@
 }
 
 mat-form-field {
-  pointer-events: none;
-  opacity: 0.8;
+  width: 25%;
   margin-top: 1rem;
 }

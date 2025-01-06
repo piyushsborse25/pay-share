@@ -10,7 +10,7 @@ export interface Bill {
   time: string;
   cashier: string;
   items: Item[];
-  participants: Set<string>;
+  participants: string[];
   paidBy: string,
   totalItems: number;
   totalQuantity: number;

@@ -40,7 +40,7 @@
 }
 
 .users {
-  width: 100%;
+  width: 98%;
   grid-area: users;
 }
 
@@ -139,4 +139,8 @@
 .delete-hover {
   scale: 1.2;
   color: red;
+}
+
+mat-toolbar button {
+  margin-left: 0.8rem;
 }

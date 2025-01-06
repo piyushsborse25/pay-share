@@ -52,7 +52,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
   templateUrl: './list-bills.component.html',
   styleUrl: './list-bills.component.css',
 })
-export class ListBillsComponent implements AfterViewInit {
+export class ListBillsComponent implements AfterViewInit, OnInit {
   bills: Bill[] = [];
   dataSource: MatTableDataSource<Bill> = new MatTableDataSource<Bill>();
   selection = new SelectionModel<Bill>(true, []);
@@ -63,8 +63,7 @@ export class ListBillsComponent implements AfterViewInit {
     'billDate',
     'totalItems',
     'totalQuantity',
-    'totalValue',
-    'actions',
+    'totalValue'
   ];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -78,8 +77,12 @@ export class ListBillsComponent implements AfterViewInit {
     private liveAnnouncer: LiveAnnouncer
   ) {}
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.loadBills();
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
   }
 
   private loadBills(): void {
@@ -87,10 +90,16 @@ export class ListBillsComponent implements AfterViewInit {
       (result: Bill[]) => {
         this.bills = result;
         this.dataSource = new MatTableDataSource<Bill>(this.bills);
-        this.dataSource.paginator = this.paginator;
       },
       (error: HttpErrorResponse) => {}
     );
+  }
+
+  getItemIdx(i: number): number {
+    if (this.paginator !== undefined) {
+      return this.paginator.pageIndex * this.paginator.pageSize + (i + 1);
+    }
+    return (i + 1);
   }
 
   announceSortChange(sortState: Sort): void {
@@ -115,12 +124,14 @@ export class ListBillsComponent implements AfterViewInit {
     throw new Error('Method not implemented.');
   }
 
-  delete(billId: any) {
+  delete() {
     throw new Error('Method not implemented.');
   }
 
-  edit(billId: any) {
-    this.router.navigateByUrl(`/edit-bill/${billId}`);
+  edit() {
+    if(this.selection.selected.length == 1) {
+      this.router.navigateByUrl(`/edit-bill/${this.selection.selected[0].billId}`);
+    }
   }
 
   isAllSelected(): boolean {
@@ -151,7 +162,7 @@ export class ListBillsComponent implements AfterViewInit {
     return new Date(dateStr);
   }
 
-  view(bill: Bill): void {
+  view(): void {
     // this.router.navigateByUrl(`/dm-view-bill/${bill.billId}`);
   }
 }
