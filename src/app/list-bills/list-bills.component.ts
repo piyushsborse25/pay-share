@@ -54,7 +54,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 })
 export class ListBillsComponent implements AfterViewInit, OnInit {
   bills: Bill[] = [];
-  dataSource: MatTableDataSource<Bill> = new MatTableDataSource<Bill>();
+  dataSource: MatTableDataSource<Bill>;
   selection = new SelectionModel<Bill>(true, []);
   displayedColumns = [
     'select',
