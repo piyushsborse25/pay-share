@@ -42,6 +42,7 @@ import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Split } from '../entities/Split';
 import { openItemViewDialog } from '../dialogs/item-list/item-list.component';
+import { openItemEditDialog } from '../dialogs/item-add/item-add.component';
 
 @Component({
   selector: 'app-bill-edit',
@@ -117,6 +118,20 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     input.value = null;
   }
 
+  removeItem() {
+    let items = this.dataSource.data;
+
+    for (let item of this.selection.selected) {
+      let idx = items.indexOf(item);
+      if (idx !== -1) {
+        items.splice(idx, 1);
+      }
+    }
+
+    this.dataSource.data = items;
+    this.selection.deselect(...this.selection.selected);
+  }
+
   getDate(dateStr: string): any {
     if (typeof dateStr === 'string') {
       const [day, month, year] = dateStr.split('/').map(Number);
@@ -178,6 +193,24 @@ export class BillEditComponent implements AfterViewInit, OnInit {
 
   getIndex(idx: number): number {
     return this.paginator.pageSize * this.paginator.pageIndex + (idx + 1);
+  }
+
+  addItem() {
+    let newItem: Item = {
+      itemId: -1,
+      name: '',
+      quantity: -1,
+      rate: -1,
+      value: -1,
+      participants: [],
+    };
+    openItemEditDialog(this.dialog, newItem, [...this.participants]).subscribe((res: Item) => {
+      if(res !== null) {
+        console.log(res);
+        this.bill.items = [res, ...this.dataSource.data];
+        this.dataSource.data = this.bill.items;
+      }
+    });
   }
 
   openItemDailog(split: any): void {

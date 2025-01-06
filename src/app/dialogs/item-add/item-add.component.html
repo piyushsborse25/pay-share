@@ -1,0 +1,47 @@
+<div class="card">
+  <div class="card-body py-5 px-md-5">
+    <h1>Add Item</h1>
+    <form [formGroup]="form">
+      <mat-form-field class="mb-4 w-100">
+        <mat-label>Item Name</mat-label>
+        <input formControlName="name" matInput />
+        <mat-error *ngIf="this.form.get('name').errors"></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="mb-4 w-100">
+        <mat-label>Item Price</mat-label>
+        <input type="number" formControlName="value" matInput />
+        <mat-error *ngIf="this.form.get('value').errors"></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="mb-4 w-100">
+        <mat-label>Item Quantity</mat-label>
+        <input type="number" formControlName="quantity" matInput />
+        <mat-error *ngIf="this.form.get('quantity').errors"></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="mb-4 w-100">
+        <mat-label>Item Rate</mat-label>
+        <input type="number" formControlName="rate" matInput />
+        <mat-error *ngIf="this.form.get('rate').errors"></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="mb-4 w-100">
+        <mat-label>Participants</mat-label>
+        <mat-select formControlName="participants" multiple>
+          <mat-option *ngFor="let person of participants" [value]="person">{{ person }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Submit button -->
+      <mat-card-actions align="end">
+        <button mat-raised-button color="primary mx-2" (click)="cancel()">
+          Cancel
+        </button>
+        <button mat-raised-button color="accent mx-2" (click)="save()">
+          Ok
+        </button>
+      </mat-card-actions>
+    </form>
+  </div>
+</div>
