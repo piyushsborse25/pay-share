@@ -40,6 +40,7 @@ import { NotifyService } from '../services/notify.service';
 import { BillService } from '../services/bill.service';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { Split } from '../entities/split';
 
 @Component({
   selector: 'app-bill-edit',
@@ -69,7 +70,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 export class BillEditComponent implements AfterViewInit, OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   bill: Bill;
-  split: any[];
+  split: Split[];
   participants = new Set<string>();
   paidByUser: string = null;
 
@@ -99,6 +100,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
       },
       (error: HttpErrorResponse) => {}
     );
+    this.generateSplit();
   }
 
   ngAfterViewInit(): void {
@@ -154,7 +156,6 @@ export class BillEditComponent implements AfterViewInit, OnInit {
 
   toggleSingle(dmItem: Item): void {
     this.selection.toggle(dmItem);
-    console.log(this.selection.selected);
   }
 
   shouldEnable(dmItem: Item): string {
@@ -166,18 +167,9 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   }
 
   generateSplit(): void {
-    // this.billService.getSplit(this.bill.billId).subscribe((res) => {
-    //   this.split = res;
-    // });
-  }
-
-  getPerson(uid: number): string {
-    for (let person of this.participants) {
-      // if (uid == person.uid) {
-      //   return person.firstName;
-      // }
-    }
-    return '';
+    this.billService.getBillSplit(this.bill.billId).subscribe((res) => {
+      this.split = res;
+    });
   }
 
   parSel($event: Event) {
@@ -202,6 +194,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     this.billService.save(this.bill).subscribe(
       (result: Bill) => {
         this.notify.openSnackBar('Bill Saved Successfully');
+        this.generateSplit();
       },
       (error: HttpErrorResponse) => {
         this.notify.openSnackBar(error.error['errorMessage']);

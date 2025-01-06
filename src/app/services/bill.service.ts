@@ -1,11 +1,13 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Bill } from '../entities/Bill';
+import { Split } from '../entities/split';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BillService {
+  
   constructor(public http: HttpClient) {}
 
   public save(bill: Bill) {
@@ -18,5 +20,9 @@ export class BillService {
 
   public getBillById(billId: number) {
     return this.http.get<Bill>(`http://localhost:8086/bill-service/bill/${billId}`);
+  }
+
+  public getBillSplit(billId: number) {
+    return this.http.get<Split[]>(`http://localhost:8086/bill-service/bill/${billId}/split`);
   }
 }

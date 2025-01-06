@@ -88,7 +88,7 @@
 
     <!-- Items Table Section -->
     <div class="items">
-      <div class="container mat-elevation-z8">
+      <div class="container mat-elevation-z3">
 
         <mat-toolbar>
           <button mat-icon-button>
@@ -96,6 +96,9 @@
           </button>
           <button mat-icon-button (click)="save()">
             <mat-icon>save</mat-icon>
+          </button>
+          <button mat-icon-button (click)="generateSplit()">
+            <mat-icon>archive</mat-icon>
           </button>
         </mat-toolbar>
 
@@ -160,33 +163,28 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
       </div>
     </div>
-    
+
     <!-- Split Results Section -->
     <div class="result" *ngIf="split">
-      <div *ngFor="let item of split" class="split-card mat-elevation-z8">
-        <div class="icon"><i class="fa-regular fa-circle-user fa-2x"></i></div>
-        <div class="data">
-          <table class="table">
-            <tbody>
-              <tr>
-                <th scope="row">Name</th>
-                <td>{{ item.dmUser?.firstName }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Items</th>
-                <td>{{ item.itemCount }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Split</th>
-                <td>{{ item.split }}</td>
-              </tr>
-            </tbody>
-          </table>
+      <div class="card-container" *ngIf="split">
+        <div class="card" *ngFor="let item of split">
+          <div class="card-icon">
+            <i class="fa-regular fa-circle-user"></i>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">{{ item.name || 'N/A' }}</h3>
+            <p class="card-detail"><strong>Items: {{ item.itemcount || 0 }}</strong></p>
+            <p class="card-detail">
+              <strong>Split:&nbsp;</strong>
+              <span class="split-amount">₹ {{ item.split || 0 }}</span>
+            </p>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>
