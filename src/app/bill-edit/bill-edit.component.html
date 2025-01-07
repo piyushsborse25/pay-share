@@ -31,13 +31,6 @@
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Total Amount</mat-label>
-          <input type="number" matInput [(ngModel)]="bill.totalValue" name="totalValue" />
-        </mat-form-field>
-
-        <!-- 2 -->
-
-        <mat-form-field>
           <mat-label>Address</mat-label>
           <input type="text" matInput [(ngModel)]="bill.address" name="address" />
         </mat-form-field>
@@ -54,15 +47,20 @@
 
         <mat-form-field>
           <mat-label>Cashier</mat-label>
-          <input type="text" matInput [(ngModel)]="bill.cashier" name="cashier" />
+          <input type="text" matInput [(ngModel)]="bill.cashier" name="cashier"/>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field class="disabled">
+          <mat-label>Total Amount</mat-label>
+          <input type="number" matInput [(ngModel)]="bill.totalValue" name="totalValue" />
+        </mat-form-field>
+
+        <mat-form-field class="disabled">
           <mat-label>Total Items</mat-label>
           <input type="number" matInput [(ngModel)]="bill.totalItems" name="totalItems" />
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field class="disabled">
           <mat-label>Total Quantity</mat-label>
           <input type="number" matInput [(ngModel)]="bill.totalQuantity" name="totalQuantity" />
         </mat-form-field>
@@ -102,6 +100,9 @@
           </button>
           <button mat-icon-button (click)="generateSplit()">
             <mat-icon>archive</mat-icon>
+          </button>
+          <button mat-icon-button (click)="download()">
+            <mat-icon>download</mat-icon>
           </button>
         </mat-toolbar>
 

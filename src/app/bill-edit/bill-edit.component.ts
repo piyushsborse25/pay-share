@@ -41,6 +41,7 @@ import { BillService } from '../services/bill.service';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Split } from '../entities/Split';
+import { saveAs } from 'file-saver';
 import { openItemViewDialog } from '../dialogs/item-list/item-list.component';
 import { openItemEditDialog } from '../dialogs/item-add/item-add.component';
 
@@ -187,6 +188,10 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     });
   }
 
+  download(): void {
+    this.billService.downloadBill(this.bill.billId);
+  }
+
   parSel($event: Event) {
     console.log($event);
   }
@@ -204,13 +209,15 @@ export class BillEditComponent implements AfterViewInit, OnInit {
       value: -1,
       participants: [],
     };
-    openItemEditDialog(this.dialog, newItem, [...this.participants]).subscribe((res: Item) => {
-      if(res !== null) {
-        console.log(res);
-        this.bill.items = [res, ...this.dataSource.data];
-        this.dataSource.data = this.bill.items;
+    openItemEditDialog(this.dialog, newItem, [...this.participants]).subscribe(
+      (res: Item) => {
+        if (res !== null) {
+          console.log(res);
+          this.bill.items = [res, ...this.dataSource.data];
+          this.dataSource.data = this.bill.items;
+        }
       }
-    });
+    );
   }
 
   openItemDailog(split: any): void {
