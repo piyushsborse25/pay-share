@@ -40,7 +40,7 @@ export class BillService {
   public downloadBill(billId: number) {
     this.http.get(`http://localhost:8086/bill-service/bill/${billId}/download`, {responseType: 'blob'}).subscribe(
       (blob: Blob) => {
-        saveAs(blob, 'bill.xlsx');
+        saveAs(blob, this.generateFileName('BILL'));
       },
       (err) => {
         console.error('Error downloading file:', err);
@@ -49,12 +49,29 @@ export class BillService {
     );
   }
 
-  private saveFile(blob: Blob, filename: string): void {
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    link.click();
-    window.URL.revokeObjectURL(url); // Clean up URL object
+  public downloadItems(items: Item[]) {
+    this.http.post(`http://localhost:8086/bill-service/items/download`, items, {responseType: 'blob'}).subscribe(
+      (blob: Blob) => {
+        saveAs(blob, this.generateFileName('ITEMS'));
+      },
+      (err) => {
+        console.error('Error downloading file:', err);
+        alert('Failed to download file.');
+      }
+    );
+  }
+
+  generateFileName(name: string): string {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+  
+    const timestamp = `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+    
+    return `${name}_${timestamp}.xlsx`;
   }
 }

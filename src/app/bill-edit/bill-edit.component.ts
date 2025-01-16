@@ -77,6 +77,8 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   participants = new Set<string>();
   paidByUser: string = null;
 
+  isItemSelected: boolean = false;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -103,7 +105,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
       },
       (error: HttpErrorResponse) => {}
     );
-    this.generateSplit();
+    // this.generateSplit();
   }
 
   ngAfterViewInit(): void {
@@ -188,8 +190,12 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     });
   }
 
-  download(): void {
+  downloadBill(): void {
     this.billService.downloadBill(this.bill.billId);
+  }
+
+  downloadItems(): void {
+    this.billService.downloadItems(this.selection.selected);
   }
 
   parSel($event: Event) {
@@ -220,6 +226,27 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     );
   }
 
+  enableEditItem() {
+    let isOnlyOneSelected: boolean = this.selection.selected.length === 1;
+    return isOnlyOneSelected? '': 'disabled';
+  }
+
+  editItem() {
+    openItemEditDialog(this.dialog, this.selection.selected[0], [...this.participants]).subscribe(
+      (res: Item) => {
+        if (res !== null) {
+          console.log(res);
+          this.bill.items = [res, ...this.dataSource.data];
+          this.dataSource.data = this.bill.items;
+        }
+      }
+    );
+  }
+
+  getIsItemSelected() {
+    return this.selection.selected.length != 0;
+  }
+
   openItemDailog(split: any): void {
     openItemViewDialog(this.dialog, this.bill.billId, split).subscribe(
       (res) => {
@@ -234,7 +261,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     this.billService.save(this.bill).subscribe(
       (result: Bill) => {
         this.notify.openSnackBar('Bill Saved Successfully');
-        this.generateSplit();
+        // this.generateSplit();
       },
       (error: HttpErrorResponse) => {
         this.notify.openSnackBar(error.error['errorMessage']);

@@ -82,12 +82,13 @@ export class ItemAddComponent implements OnInit {
     private dialogRef: MatDialogRef<ItemAddComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    let item: Item = this.data['item'];
     this.form = this.fb.group({
-      name: [null, [Validators.required, Validators.maxLength(20)]],
-      value: [null, [Validators.required]],
-      quantity: [null, [Validators.required]],
-      rate: [null, [Validators.required]],
-      participants: [null, [Validators.required]],
+      name: [item.name, [Validators.required, Validators.maxLength(20)]],
+      value: [item.value, [Validators.required]],
+      quantity: [item.quantity, [Validators.required]],
+      rate: [item.rate, [Validators.required]],
+      participants: [item.participants, [Validators.required]],
     });
   }
 

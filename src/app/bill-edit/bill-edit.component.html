@@ -89,20 +89,26 @@
       <div class="container mat-elevation-z3">
 
         <mat-toolbar>
-          <button mat-icon-button (click)="addItem()">
-            <mat-icon>add</mat-icon>
+          <button mat-icon-button matTooltip="Add Item" [matTooltipPosition]="'above'" class="toolbar-button" (click)="addItem()">
+            <i class="fa-solid fa-circle-plus toolbar-icon"></i>
           </button>
-          <button mat-icon-button (click)="removeItem()">
-            <mat-icon>remove</mat-icon>
+          <button mat-icon-button matTooltip="Delete Item" [matTooltipPosition]="'above'" class="toolbar-button" (click)="removeItem()">
+            <i class="fa-solid fa-trash toolbar-icon"></i>
           </button>
-          <button mat-icon-button (click)="save()">
-            <mat-icon>save</mat-icon>
+          <button mat-icon-button matTooltip="Edit Item" [ngClass]="enableEditItem()" [matTooltipPosition]="'above'" class="toolbar-button" (click)="editItem()">
+            <i class="fa-solid fa-pen-to-square toolbar-icon"></i>
           </button>
-          <button mat-icon-button (click)="generateSplit()">
-            <mat-icon>archive</mat-icon>
+          <button mat-icon-button matTooltip="Save Bill" [matTooltipPosition]="'above'" class="toolbar-button" (click)="save()">
+            <i class="fa-solid fa-floppy-disk toolbar-icon"></i>
           </button>
-          <button mat-icon-button (click)="download()">
-            <mat-icon>download</mat-icon>
+          <button mat-icon-button matTooltip="Generate Split" [matTooltipPosition]="'above'" class="toolbar-button" (click)="generateSplit()">
+            <i class="fa-solid fa-indian-rupee-sign toolbar-icon"></i>
+          </button>       
+          <button *ngIf="!getIsItemSelected()" matTooltip="Download Bill" [matTooltipPosition]="'above'" mat-icon-button class="toolbar-button" (click)="downloadBill()">
+            <i class="fa-solid fa-download toolbar-icon"></i>
+          </button>
+          <button *ngIf="getIsItemSelected()" matTooltip="Download Items" [matTooltipPosition]="'above'" mat-icon-button class="toolbar-button" (click)="downloadItems()">
+            <i class="fa-solid fa-cloud-arrow-down toolbar-icon"></i>
           </button>
         </mat-toolbar>
 
