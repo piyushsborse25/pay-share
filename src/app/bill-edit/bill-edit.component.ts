@@ -38,7 +38,7 @@ import { Bill } from '../entities/Bill';
 import { Item } from '../entities/Item';
 import { NotifyService } from '../services/notify.service';
 import { BillService } from '../services/bill.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Split } from '../entities/Split';
 import { saveAs } from 'file-saver';
@@ -93,7 +93,8 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     private billService: BillService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private refresh: ChangeDetectorRef
+    private refresh: ChangeDetectorRef,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -257,6 +258,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
 
   save() {
     this.bill.participants = [...this.participants];
+    this.bill.billDate = this.datePipe.transform(this.bill.billDate, 'dd/MM/yyyy'); 
     console.log(this.bill);
     this.billService.save(this.bill).subscribe(
       (result: Bill) => {
