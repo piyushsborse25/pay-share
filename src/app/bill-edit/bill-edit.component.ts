@@ -5,13 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -19,11 +13,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import {
-  MatAutocompleteModule,
-  MatAutocompleteSelectedEvent,
-} from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -31,7 +22,7 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
-import { B, COMMA, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs';
 import { Bill } from '../entities/Bill';
@@ -41,9 +32,9 @@ import { BillService } from '../services/bill.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Split } from '../entities/Split';
-import { saveAs } from 'file-saver';
 import { openItemViewDialog } from '../dialogs/item-list/item-list.component';
 import { openItemEditDialog } from '../dialogs/item-add/item-add.component';
+import { openConfirmDialog } from '../dialogs/confirm/confirm.component';
 
 @Component({
   selector: 'app-bill-edit',
@@ -132,17 +123,23 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   }
 
   removeItem() {
-    let items = this.dataSource.data;
+    openConfirmDialog(this.dialog, 'This will delete the Item.').subscribe(
+      (del: boolean) => {
+        if (del) {
+          let items = this.dataSource.data;
 
-    for (let item of this.selection.selected) {
-      let idx = items.indexOf(item);
-      if (idx !== -1) {
-        items.splice(idx, 1);
+          for (let item of this.selection.selected) {
+            let idx = items.indexOf(item);
+            if (idx !== -1) {
+              items.splice(idx, 1);
+            }
+          }
+
+          this.dataSource.data = items;
+          this.selection.deselect(...this.selection.selected);
+        }
       }
-    }
-
-    this.dataSource.data = items;
-    this.selection.deselect(...this.selection.selected);
+    );
   }
 
   getDate(dateStr: string): any {
@@ -222,7 +219,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
         ...this.participants,
       ]).subscribe((res: Item) => {
         if (res !== null) {
-          console.log('New Item',res);
+          console.log('New Item', res);
           this.bill.items = [res, ...this.dataSource.data];
           this.dataSource.data = this.bill.items;
         }

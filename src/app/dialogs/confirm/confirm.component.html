@@ -1,0 +1,12 @@
+<div class="dialog-container">
+  <div id="overlay" class="overlay" style="display: flex;">
+    <div class="confirmation-box">
+      <h3>Are You Sure?</h3>
+      <p>{{ message }}</p>
+      <div class="button-group">
+        <button class="confirm-btn" (click)="confirmAction()">Yes, Proceed</button>
+        <button class="cancel-btn" (click)="closeConfirmationBox()">No, Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
