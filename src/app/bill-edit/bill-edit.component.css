@@ -19,7 +19,13 @@
   display: grid;
   gap: 0.3rem;
   padding: 0.5rem 0;
-  grid-template-areas: "users" "top-area" "items" "action" "result";
+  grid-template-areas: "tool-bar" "users" "top-area" "items" "action" "result";
+}
+
+.toolbar {
+  width: 98%;
+  grid-area: tool-bar;
+  margin: 5px;
 }
 
 .top-area form {

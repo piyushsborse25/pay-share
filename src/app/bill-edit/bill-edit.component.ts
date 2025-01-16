@@ -229,19 +229,24 @@ export class BillEditComponent implements AfterViewInit, OnInit {
 
   enableEditItem() {
     let isOnlyOneSelected: boolean = this.selection.selected.length === 1;
-    return isOnlyOneSelected? '': 'disabled';
+    return isOnlyOneSelected ? '' : 'disabled';
+  }
+
+  enableDownloadItem() {
+    let isOnlyOneSelected: boolean = this.selection.selected.length != 0;
+    return isOnlyOneSelected ? '' : 'disabled';
   }
 
   editItem() {
-    openItemEditDialog(this.dialog, this.selection.selected[0], [...this.participants]).subscribe(
-      (res: Item) => {
-        if (res !== null) {
-          console.log(res);
-          this.bill.items = [res, ...this.dataSource.data];
-          this.dataSource.data = this.bill.items;
-        }
+    openItemEditDialog(this.dialog, this.selection.selected[0], [
+      ...this.participants,
+    ]).subscribe((res: Item) => {
+      if (res !== null) {
+        console.log(res);
+        this.bill.items = [res, ...this.dataSource.data];
+        this.dataSource.data = this.bill.items;
       }
-    );
+    });
   }
 
   getIsItemSelected() {
@@ -258,8 +263,10 @@ export class BillEditComponent implements AfterViewInit, OnInit {
 
   save() {
     this.bill.participants = [...this.participants];
-    this.bill.billDate = this.datePipe.transform(this.bill.billDate, 'dd/MM/yyyy'); 
     console.log(this.bill);
+    const formattedDate = new Intl.DateTimeFormat('en-GB').format(new Date(this.bill.billDate));
+    this.bill.billDate = formattedDate;
+
     this.billService.save(this.bill).subscribe(
       (result: Bill) => {
         this.notify.openSnackBar('Bill Saved Successfully');
@@ -270,4 +277,5 @@ export class BillEditComponent implements AfterViewInit, OnInit {
       }
     );
   }
+  
 }

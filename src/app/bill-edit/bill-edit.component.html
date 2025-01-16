@@ -1,6 +1,40 @@
 <div class="container-wrap">
   <div class="container">
     <!-- Bill Details Section -->
+    <div class="toolbar">
+      <mat-toolbar>
+        <button mat-icon-button matTooltip="Save Bill" [matTooltipPosition]="'above'" class="toolbar-button"
+          (click)="save()">
+          <i class="fa-solid fa-floppy-disk toolbar-icon"></i>
+        </button>
+        <button mat-icon-button matTooltip="Generate Split" [matTooltipPosition]="'above'" class="toolbar-button"
+          (click)="generateSplit()">
+          <i class="fa-solid fa-indian-rupee-sign toolbar-icon"></i>
+        </button>
+        <button matTooltip="Download Bill" [matTooltipPosition]="'above'" mat-icon-button class="toolbar-button"
+          (click)="downloadBill()">
+          <i class="fa-solid fa-download toolbar-icon"></i>
+        </button>
+      </mat-toolbar>
+    </div>
+
+    <!-- Participants Section -->
+    <div class="users">
+      <form>
+        <mat-form-field>
+          <mat-label>Participants</mat-label>
+          <mat-chip-grid #chipGrid>
+            <mat-chip-row *ngFor="let person of participants" (removed)="remove(person)">
+              {{ person }}
+              <button matChipRemove><mat-icon>cancel</mat-icon></button>
+            </mat-chip-row>
+          </mat-chip-grid>
+          <input #input name="currPerson" [placeholder]="'Add Person...'" [matChipInputFor]="chipGrid"
+            (keyup.enter)="selected(input)" />
+        </mat-form-field>
+      </form>
+    </div>
+
     <div class="top-area">
       <form>
         <mat-form-field>
@@ -47,7 +81,7 @@
 
         <mat-form-field>
           <mat-label>Cashier</mat-label>
-          <input type="text" matInput [(ngModel)]="bill.cashier" name="cashier"/>
+          <input type="text" matInput [(ngModel)]="bill.cashier" name="cashier" />
         </mat-form-field>
 
         <mat-form-field class="disabled">
@@ -67,47 +101,25 @@
       </form>
     </div>
 
-    <!-- Participants Section -->
-    <div class="users">
-      <form>
-        <mat-form-field>
-          <mat-label>Participants</mat-label>
-          <mat-chip-grid #chipGrid>
-            <mat-chip-row *ngFor="let person of participants" (removed)="remove(person)">
-              {{ person }}
-              <button matChipRemove><mat-icon>cancel</mat-icon></button>
-            </mat-chip-row>
-          </mat-chip-grid>
-          <input #input name="currPerson" [placeholder]="'Add Person...'" [matChipInputFor]="chipGrid"
-            (keyup.enter)="selected(input)" />
-        </mat-form-field>
-      </form>
-    </div>
-
     <!-- Items Table Section -->
     <div class="items">
       <div class="container mat-elevation-z3">
 
         <mat-toolbar>
-          <button mat-icon-button matTooltip="Add Item" [matTooltipPosition]="'above'" class="toolbar-button" (click)="addItem()">
+          <button mat-icon-button matTooltip="Add Item" [matTooltipPosition]="'above'" class="toolbar-button"
+            (click)="addItem()">
             <i class="fa-solid fa-circle-plus toolbar-icon"></i>
           </button>
-          <button mat-icon-button matTooltip="Delete Item" [matTooltipPosition]="'above'" class="toolbar-button" (click)="removeItem()">
-            <i class="fa-solid fa-trash toolbar-icon"></i>
-          </button>
-          <button mat-icon-button matTooltip="Edit Item" [ngClass]="enableEditItem()" [matTooltipPosition]="'above'" class="toolbar-button" (click)="editItem()">
+          <button mat-icon-button matTooltip="Edit Item" [ngClass]="enableEditItem()" [matTooltipPosition]="'above'"
+            class="toolbar-button" (click)="editItem()">
             <i class="fa-solid fa-pen-to-square toolbar-icon"></i>
           </button>
-          <button mat-icon-button matTooltip="Save Bill" [matTooltipPosition]="'above'" class="toolbar-button" (click)="save()">
-            <i class="fa-solid fa-floppy-disk toolbar-icon"></i>
+          <button mat-icon-button matTooltip="Delete Item" [matTooltipPosition]="'above'" class="toolbar-button"
+            (click)="removeItem()">
+            <i class="fa-solid fa-trash toolbar-icon"></i>
           </button>
-          <button mat-icon-button matTooltip="Generate Split" [matTooltipPosition]="'above'" class="toolbar-button" (click)="generateSplit()">
-            <i class="fa-solid fa-indian-rupee-sign toolbar-icon"></i>
-          </button>       
-          <button *ngIf="!getIsItemSelected()" matTooltip="Download Bill" [matTooltipPosition]="'above'" mat-icon-button class="toolbar-button" (click)="downloadBill()">
-            <i class="fa-solid fa-download toolbar-icon"></i>
-          </button>
-          <button *ngIf="getIsItemSelected()" matTooltip="Download Items" [matTooltipPosition]="'above'" mat-icon-button class="toolbar-button" (click)="downloadItems()">
+          <button matTooltip="Download Item(s)" [ngClass]="enableDownloadItem()" [matTooltipPosition]="'above'"
+            mat-icon-button class="toolbar-button" (click)="downloadItems()">
             <i class="fa-solid fa-cloud-arrow-down toolbar-icon"></i>
           </button>
         </mat-toolbar>
