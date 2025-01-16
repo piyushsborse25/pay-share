@@ -80,11 +80,6 @@
   margin-left: 0.5rem;
 }
 
-.disabled {
-  pointer-events: none;
-  opacity: 0.8;
-}
-
 .save-hover {
   scale: 1.2;
   color: green;
@@ -195,7 +190,9 @@ mat-toolbar button {
   transform: scale(1.05);
 }
 
-
+.toolbar-button:hover .red {
+  color: red;
+}
 
 @media (max-width: 768px) {
   .card {

@@ -64,7 +64,7 @@ import { Item } from '../../entities/Item';
     MatAutocompleteModule,
     MatTooltipModule,
     MatDatepickerModule,
-    MatCardActions
+    MatCardActions,
   ],
   templateUrl: './item-add.component.html',
   styleUrl: './item-add.component.css',
@@ -85,10 +85,10 @@ export class ItemAddComponent implements OnInit {
     let item: Item = this.data['item'];
     this.form = this.fb.group({
       name: [item.name, [Validators.required, Validators.maxLength(20)]],
-      value: [item.value, [Validators.required]],
+      value: [{ value: item.value, disabled: true }, [Validators.required]],
       quantity: [item.quantity, [Validators.required]],
       rate: [item.rate, [Validators.required]],
-      participants: [item.participants, [Validators.required]],
+      participants: [item.participants],
     });
   }
 
@@ -98,7 +98,7 @@ export class ItemAddComponent implements OnInit {
 
   save(): void {
     if (this.validateForm()) {
-      this.dialogRef.close(this.form.value);
+      this.dialogRef.close(this.form.getRawValue());
     } else {
       this.notify.openSnackBar('Fill form correctly!');
     }
@@ -106,6 +106,15 @@ export class ItemAddComponent implements OnInit {
 
   cancel(): void {
     this.dialogRef.close(null);
+  }
+
+  calcValue() {
+    let rate = parseInt(this.form.get('rate').value);
+    let quantity = parseInt(this.form.get('quantity').value);
+
+    if (!isNaN(rate) && !isNaN(quantity)) {
+      this.form.get('value').setValue(rate * quantity);
+    }
   }
 
   validateForm(): boolean {

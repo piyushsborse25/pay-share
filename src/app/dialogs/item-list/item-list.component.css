@@ -1,7 +1,3 @@
-.disabled {
-  pointer-events: none;
-}
-
 .container {
   overflow: scroll;
   max-height: 95vh;

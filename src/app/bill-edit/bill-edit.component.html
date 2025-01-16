@@ -114,9 +114,9 @@
             class="toolbar-button" (click)="editItem()">
             <i class="fa-solid fa-pen-to-square toolbar-icon"></i>
           </button>
-          <button mat-icon-button matTooltip="Delete Item" [matTooltipPosition]="'above'" class="toolbar-button"
+          <button mat-icon-button matTooltip="Delete Item(s)" [ngClass]="enableDownloadItem()" [matTooltipPosition]="'above'" class="toolbar-button"
             (click)="removeItem()">
-            <i class="fa-solid fa-trash toolbar-icon"></i>
+            <i class="fa-solid fa-trash toolbar-icon red"></i>
           </button>
           <button matTooltip="Download Item(s)" [ngClass]="enableDownloadItem()" [matTooltipPosition]="'above'"
             mat-icon-button class="toolbar-button" (click)="downloadItems()">

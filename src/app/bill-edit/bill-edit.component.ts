@@ -86,6 +86,15 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   selection = new SelectionModel<Item>(true, []);
   displayedColumns = ['select', 'itemId', 'itemName', 'itemPrice', 'people'];
 
+  newItem: Item = {
+    itemId: -1,
+    name: null,
+    quantity: null,
+    rate: null,
+    value: null,
+    participants: [],
+  };
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -208,23 +217,19 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   }
 
   addItem() {
-    let newItem: Item = {
-      itemId: -1,
-      name: '',
-      quantity: -1,
-      rate: -1,
-      value: -1,
-      participants: [],
-    };
-    openItemEditDialog(this.dialog, newItem, [...this.participants]).subscribe(
-      (res: Item) => {
+    if (this.participants.size != 0) {
+      openItemEditDialog(this.dialog, this.newItem, [
+        ...this.participants,
+      ]).subscribe((res: Item) => {
         if (res !== null) {
-          console.log(res);
+          console.log('New Item',res);
           this.bill.items = [res, ...this.dataSource.data];
           this.dataSource.data = this.bill.items;
         }
-      }
-    );
+      });
+    } else {
+      this.notify.openSnackBar('Please Add Participants');
+    }
   }
 
   enableEditItem() {
@@ -238,15 +243,19 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   }
 
   editItem() {
-    openItemEditDialog(this.dialog, this.selection.selected[0], [
-      ...this.participants,
-    ]).subscribe((res: Item) => {
-      if (res !== null) {
-        console.log(res);
-        this.bill.items = [res, ...this.dataSource.data];
-        this.dataSource.data = this.bill.items;
-      }
-    });
+    if (this.participants.size != 0) {
+      openItemEditDialog(this.dialog, this.selection.selected[0], [
+        ...this.participants,
+      ]).subscribe((res: Item) => {
+        if (res !== null) {
+          console.log(res);
+          this.bill.items = [res, ...this.dataSource.data];
+          this.dataSource.data = this.bill.items;
+        }
+      });
+    } else {
+      this.notify.openSnackBar('Please Add Participants');
+    }
   }
 
   getIsItemSelected() {
@@ -264,7 +273,9 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   save() {
     this.bill.participants = [...this.participants];
     console.log(this.bill);
-    const formattedDate = new Intl.DateTimeFormat('en-GB').format(new Date(this.bill.billDate));
+    const formattedDate = new Intl.DateTimeFormat('en-GB').format(
+      new Date(this.bill.billDate)
+    );
     this.bill.billDate = formattedDate;
 
     this.billService.save(this.bill).subscribe(
@@ -277,5 +288,4 @@ export class BillEditComponent implements AfterViewInit, OnInit {
       }
     );
   }
-  
 }

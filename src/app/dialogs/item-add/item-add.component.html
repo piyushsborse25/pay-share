@@ -9,21 +9,21 @@
       </mat-form-field>
 
       <mat-form-field class="mb-4 w-100">
-        <mat-label>Item Price</mat-label>
-        <input type="number" formControlName="value" matInput />
-        <mat-error *ngIf="this.form.get('value').errors"></mat-error>
+        <mat-label>Item Rate</mat-label>
+        <input type="number" (keyup)="calcValue()" formControlName="rate" matInput />
+        <mat-error *ngIf="this.form.get('rate').errors"></mat-error>
       </mat-form-field>
 
       <mat-form-field class="mb-4 w-100">
         <mat-label>Item Quantity</mat-label>
-        <input type="number" formControlName="quantity" matInput />
+        <input type="number" (keyup)="calcValue()" formControlName="quantity" matInput />
         <mat-error *ngIf="this.form.get('quantity').errors"></mat-error>
       </mat-form-field>
 
       <mat-form-field class="mb-4 w-100">
-        <mat-label>Item Rate</mat-label>
-        <input type="number" formControlName="rate" matInput />
-        <mat-error *ngIf="this.form.get('rate').errors"></mat-error>
+        <mat-label>Item Price</mat-label>
+        <input type="number" class="disabled" formControlName="value" matInput/>
+        <mat-error *ngIf="this.form.get('value').errors"></mat-error>
       </mat-form-field>
 
       <mat-form-field class="mb-4 w-100">
