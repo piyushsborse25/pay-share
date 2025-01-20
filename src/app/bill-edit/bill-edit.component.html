@@ -1,7 +1,7 @@
-<div class="container-wrap" [ngClass]="isEditable()">
+<div class="container-wrap">
   <div class="container">
     <!-- Bill Details Section -->
-    <div class="toolbar">
+    <div class="toolbar" [ngClass]="isEditable()">
       <mat-toolbar>
         <button mat-icon-button matTooltip="Save Bill" [matTooltipPosition]="'above'" class="toolbar-button"
           (click)="save()">
@@ -19,7 +19,7 @@
     </div>
 
     <!-- Participants Section -->
-    <div class="users">
+    <div class="users" [ngClass]="isEditable()">
       <form>
         <mat-form-field>
           <mat-label>Participants</mat-label>
@@ -35,7 +35,7 @@
       </form>
     </div>
     
-    <div class="top-area">
+    <div class="top-area" [ngClass]="isEditable()">
       <form>
         <mat-form-field>
           <mat-label>Bill Name</mat-label>
@@ -105,7 +105,7 @@
     <div class="items">
       <div class="container mat-elevation-z3">
 
-        <mat-toolbar>
+        <mat-toolbar [ngClass]="isEditable()">
           <button mat-icon-button matTooltip="Add Item" [matTooltipPosition]="'above'" class="toolbar-button"
             (click)="addItem()">
             <i class="fa-solid fa-circle-plus toolbar-icon"></i>
@@ -124,7 +124,7 @@
           </button>
         </mat-toolbar>
 
-        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
+        <table mat-table [dataSource]="dataSource"  [ngClass]="isEditable()" matSort (matSortChange)="announceSortChange($event)">
           <!-- Select Column -->
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
