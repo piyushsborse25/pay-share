@@ -22,7 +22,7 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, ENTER, T } from '@angular/cdk/keycodes';
 import { HttpErrorResponse } from '@angular/common/http';
 import { map } from 'rxjs';
 import { Bill } from '../entities/Bill';
@@ -35,6 +35,7 @@ import { Split } from '../entities/Split';
 import { openItemViewDialog } from '../dialogs/item-list/item-list.component';
 import { openItemEditDialog } from '../dialogs/item-add/item-add.component';
 import { openConfirmDialog } from '../dialogs/confirm/confirm.component';
+import { log } from 'node:console';
 
 @Component({
   selector: 'app-bill-edit',
@@ -67,6 +68,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   splits: Split[];
   participants = new Set<string>();
   paidByUser: string = null;
+  editable = true;
 
   isItemSelected: boolean = false;
 
@@ -106,7 +108,18 @@ export class BillEditComponent implements AfterViewInit, OnInit {
       },
       (error: HttpErrorResponse) => {}
     );
-    // this.generateSplit();
+    
+    this.route.data.pipe(map((data) => data['editable'])).subscribe(
+      (isEditable: boolean) => {
+        if(isEditable !== undefined) {
+          this.editable = isEditable;
+          this.generateSplit();
+        } else {
+          this.editable = true;
+        }
+      },
+      (error: HttpErrorResponse) => {}
+    );
   }
 
   ngAfterViewInit(): void {
@@ -235,7 +248,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   }
 
   enableDownloadItem() {
-    let isOnlyOneSelected: boolean = this.selection.selected.length != 0;
+    let isOnlyOneSelected: boolean = this.selection.selected.length === 1;
     return isOnlyOneSelected ? '' : 'disabled';
   }
 
@@ -255,6 +268,10 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     }
   }
 
+  isEditable() {
+    return this.editable? '': 'disabled';
+  }
+
   getIsItemSelected() {
     return this.selection.selected.length != 0;
   }
@@ -269,16 +286,24 @@ export class BillEditComponent implements AfterViewInit, OnInit {
 
   save() {
     this.bill.participants = [...this.participants];
-    console.log(this.bill);
-    const formattedDate = new Intl.DateTimeFormat('en-GB').format(
-      new Date(this.bill.billDate)
-    );
+
+    let date = this.bill.billDate;
+    let formattedDate = null;
+
+    if (typeof date === 'string') {
+      let [day, month, year] = date.split('/');
+      formattedDate = new Date(`${year}-${month}-${day}`);
+    } else {
+      formattedDate = new Intl.DateTimeFormat('en-GB').format(
+        new Date(date)
+      );
+    }
+
     this.bill.billDate = formattedDate;
 
     this.billService.save(this.bill).subscribe(
       (result: Bill) => {
         this.notify.openSnackBar('Bill Saved Successfully');
-        // this.generateSplit();
       },
       (error: HttpErrorResponse) => {
         this.notify.openSnackBar(error.error['errorMessage']);
