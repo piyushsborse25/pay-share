@@ -1,4 +1,4 @@
-<div class="container-wrap">
+<div class="container-wrap" [ngClass]="isEditable()">
   <div class="container">
     <!-- Bill Details Section -->
     <div class="toolbar">
@@ -201,7 +201,7 @@
             <p class="card-detail"><strong>Items: {{ split.itemcount || 0 }}</strong></p>
             <p class="card-detail">
               <strong>Split:&nbsp;</strong>
-              <span class="split-amount">₹ {{ split.split || 0 }}</span>
+              <span class="split-amount">₹ {{ split.split.toFixed(2) || 0 }}</span>
             </p>
           </div>
         </div>

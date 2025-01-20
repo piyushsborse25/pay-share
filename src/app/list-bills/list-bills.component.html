@@ -1,16 +1,21 @@
 <div class="container-fluid mat-elevation-z8">
 
-  <mat-toolbar>
-    <button mat-icon-button (click)="view()">
-      <mat-icon>visibility</mat-icon>
-    </button>
-    <button mat-icon-button (click)="edit()">
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button mat-icon-button (click)="delete()">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </mat-toolbar>
+  <div class="toolbar">
+    <mat-toolbar>
+      <button mat-icon-button matTooltip="View Bill" [ngClass]="enableEditBill()" [matTooltipPosition]="'above'"
+        class="toolbar-button" (click)="view()">
+        <i class="fa-solid fa-eye toolbar-icon"></i>
+      </button>
+      <button mat-icon-button matTooltip="Edit Bill" [ngClass]="enableEditBill()" [matTooltipPosition]="'above'"
+        class="toolbar-button" (click)="edit()">
+        <i class="fa-solid fa-pen-to-square toolbar-icon"></i>
+      </button>
+      <button mat-icon-button matTooltip="Delete Bill" [ngClass]="enableDeleteBill()" [matTooltipPosition]="'above'"
+        class="toolbar-button" (click)="deleteBill()">
+        <i class="fa-solid fa-trash toolbar-icon red"></i>
+      </button>
+    </mat-toolbar>
+  </div>
 
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
     <!-- Select Column -->

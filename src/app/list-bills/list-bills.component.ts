@@ -25,6 +25,9 @@ import { Bill } from '../entities/Bill';
 import { NotifyService } from '../services/notify.service';
 import { BillService } from '../services/bill.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { openConfirmDialog } from '../dialogs/confirm/confirm.component';
+import { DialogRef } from '@angular/cdk/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-list-bills',
@@ -74,7 +77,8 @@ export class ListBillsComponent implements AfterViewInit, OnInit {
     private router: Router,
     private notify: NotifyService,
     private billService: BillService,
-    private liveAnnouncer: LiveAnnouncer
+    private liveAnnouncer: LiveAnnouncer,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -82,7 +86,7 @@ export class ListBillsComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    if(this.dataSource !== undefined) {
+    if (this.dataSource !== undefined) {
       this.dataSource.paginator = this.paginator;
     }
   }
@@ -96,6 +100,16 @@ export class ListBillsComponent implements AfterViewInit, OnInit {
       },
       (error: HttpErrorResponse) => {}
     );
+  }
+
+  enableEditBill() {
+    let isOnlyOneSelected: boolean = this.selection.selected.length === 1;
+    return isOnlyOneSelected ? '' : 'disabled';
+  }
+
+  enableDeleteBill() {
+    let isOnlyOneSelected: boolean = this.selection.selected.length === 1;
+    return isOnlyOneSelected ? '' : 'disabled';
   }
 
   getItemIdx(i: number): number {
@@ -127,14 +141,44 @@ export class ListBillsComponent implements AfterViewInit, OnInit {
     throw new Error('Method not implemented.');
   }
 
-  delete() {
-    throw new Error('Method not implemented.');
+  deleteBill() {
+    if (this.selection.selected.length == 1) {
+      openConfirmDialog(this.dialog, 'This will delete the Bill').subscribe(
+        (value: boolean) => {
+          if (value) {
+            this.billService
+              .deleteBillById(this.selection.selected[0].billId)
+              .subscribe((deleted: boolean) => {
+                if (deleted) {
+                  this.notify.openSnackBar('Bill deleted Successfully');
+                  let temp = this.dataSource.data;
+                  let idx = temp.indexOf(this.selection.selected[0]);
+                  this.selection.deselect(this.selection.selected[0]);
+                  temp.splice(idx, 1);
+
+                  this.dataSource.data = temp;
+                } else {
+                  this.notify.openSnackBar('Failed to delete bill');
+                }
+              });
+          }
+        }
+      );
+    }
   }
 
   edit() {
     if (this.selection.selected.length == 1) {
       this.router.navigateByUrl(
         `/edit-bill/${this.selection.selected[0].billId}`
+      );
+    }
+  }
+
+  view(): void {
+    if (this.selection.selected.length == 1) {
+      this.router.navigateByUrl(
+        `/view-bill/${this.selection.selected[0].billId}/editable/false`
       );
     }
   }
@@ -165,9 +209,5 @@ export class ListBillsComponent implements AfterViewInit, OnInit {
 
   getDate(dateStr: string): Date {
     return new Date(dateStr);
-  }
-
-  view(): void {
-    // this.router.navigateByUrl(`/dm-view-bill/${bill.billId}`);
   }
 }

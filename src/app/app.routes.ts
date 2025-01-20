@@ -3,6 +3,7 @@ import { JsonBillEditorComponent } from './json-bill-editor/json-bill-editor.com
 import { ListBillsComponent } from './list-bills/list-bills.component';
 import { BillEditComponent } from './bill-edit/bill-edit.component';
 import { billEditResolver } from './resolvers/bill-edit/bill-edit.resolver';
+import { editableResolver } from './resolvers/editable/editable.resolver';
 
 export const routes: Routes = [
   {
@@ -28,6 +29,14 @@ export const routes: Routes = [
     component: BillEditComponent,
     resolve: {
       bill: billEditResolver
+    }
+  },
+  {
+    path: 'view-bill/:billId/editable/:editable',
+    component: BillEditComponent,
+    resolve: {
+      bill: billEditResolver,
+      editable: editableResolver
     }
   },
 ];

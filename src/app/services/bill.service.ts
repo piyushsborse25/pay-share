@@ -25,6 +25,12 @@ export class BillService {
     );
   }
 
+  public deleteBillById(billId: number) {
+    return this.http.delete<boolean>(
+      `http://localhost:8086/bill-service/bill/${billId}`
+    );
+  }
+
   public getBillSplit(billId: number) {
     return this.http.get<Split[]>(
       `http://localhost:8086/bill-service/bill/${billId}/split`
@@ -38,27 +44,35 @@ export class BillService {
   }
 
   public downloadBill(billId: number) {
-    this.http.get(`http://localhost:8086/bill-service/bill/${billId}/download`, {responseType: 'blob'}).subscribe(
-      (blob: Blob) => {
-        saveAs(blob, this.generateFileName('BILL'));
-      },
-      (err) => {
-        console.error('Error downloading file:', err);
-        alert('Failed to download file.');
-      }
-    );
+    this.http
+      .get(`http://localhost:8086/bill-service/bill/${billId}/download`, {
+        responseType: 'blob',
+      })
+      .subscribe(
+        (blob: Blob) => {
+          saveAs(blob, this.generateFileName('BILL'));
+        },
+        (err) => {
+          console.error('Error downloading file:', err);
+          alert('Failed to download file.');
+        }
+      );
   }
 
   public downloadItems(items: Item[]) {
-    this.http.post(`http://localhost:8086/bill-service/items/download`, items, {responseType: 'blob'}).subscribe(
-      (blob: Blob) => {
-        saveAs(blob, this.generateFileName('ITEMS'));
-      },
-      (err) => {
-        console.error('Error downloading file:', err);
-        alert('Failed to download file.');
-      }
-    );
+    this.http
+      .post(`http://localhost:8086/bill-service/items/download`, items, {
+        responseType: 'blob',
+      })
+      .subscribe(
+        (blob: Blob) => {
+          saveAs(blob, this.generateFileName('ITEMS'));
+        },
+        (err) => {
+          console.error('Error downloading file:', err);
+          alert('Failed to download file.');
+        }
+      );
   }
 
   generateFileName(name: string): string {
@@ -69,9 +83,9 @@ export class BillService {
     const hours = now.getHours().toString().padStart(2, '0');
     const minutes = now.getMinutes().toString().padStart(2, '0');
     const seconds = now.getSeconds().toString().padStart(2, '0');
-  
+
     const timestamp = `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
-    
+
     return `${name}_${timestamp}.xlsx`;
   }
 }
