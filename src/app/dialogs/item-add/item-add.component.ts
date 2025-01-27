@@ -84,7 +84,8 @@ export class ItemAddComponent implements OnInit {
   ) {
     let item: Item = this.data['item'];
     this.form = this.fb.group({
-      name: [item.name, [Validators.required, Validators.maxLength(20)]],
+      itemId: [item.itemId],
+      name: [item.name, [Validators.required, Validators.maxLength(200)]],
       value: [{ value: item.value, disabled: true }, [Validators.required]],
       quantity: [item.quantity, [Validators.required]],
       rate: [item.rate, [Validators.required]],
@@ -109,8 +110,8 @@ export class ItemAddComponent implements OnInit {
   }
 
   calcValue() {
-    let rate = parseInt(this.form.get('rate').value);
-    let quantity = parseInt(this.form.get('quantity').value);
+    let rate = parseFloat(this.form.get('rate').value);
+    let quantity = parseFloat(this.form.get('quantity').value);
 
     if (!isNaN(rate) && !isNaN(quantity)) {
       this.form.get('value').setValue(rate * quantity);

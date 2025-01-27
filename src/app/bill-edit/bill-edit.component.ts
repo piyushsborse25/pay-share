@@ -232,7 +232,6 @@ export class BillEditComponent implements AfterViewInit, OnInit {
         ...this.participants,
       ]).subscribe((res: Item) => {
         if (res !== null) {
-          console.log('New Item', res);
           this.bill.items = [res, ...this.dataSource.data];
           this.dataSource.data = this.bill.items;
         }
@@ -248,7 +247,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   }
 
   enableDownloadItem() {
-    let isOnlyOneSelected: boolean = this.selection.selected.length === 1;
+    let isOnlyOneSelected: boolean = this.selection.selected.length >= 1;
     return isOnlyOneSelected ? '' : 'disabled';
   }
 
@@ -257,11 +256,23 @@ export class BillEditComponent implements AfterViewInit, OnInit {
       openItemEditDialog(this.dialog, this.selection.selected[0], [
         ...this.participants,
       ]).subscribe((res: Item) => {
+        
         if (res !== null) {
-          console.log(res);
-          this.bill.items = [res, ...this.dataSource.data];
+          let temp = this.dataSource.data;
+          let itr = 0;
+          for(let itm of temp) {
+            if(itm.itemId === res.itemId) {
+              break;
+            }
+            itr++;
+          }
+          this.selection.deselect(temp[itr]);
+          this.selection.select(res);
+          temp[itr] = res;
+          this.bill.items = temp;
           this.dataSource.data = this.bill.items;
         }
+
       });
     } else {
       this.notify.openSnackBar('Please Add Participants');

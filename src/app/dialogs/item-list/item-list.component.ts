@@ -158,7 +158,7 @@ export class ItemListComponent implements AfterViewInit, OnInit {
   }
 
   getHalf(item: Item): number {
-    return item.value / item.participants.length;
+    return parseFloat((item.value / item.participants.length).toFixed(2));
   }
 }
 
