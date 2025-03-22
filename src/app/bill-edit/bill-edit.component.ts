@@ -108,10 +108,10 @@ export class BillEditComponent implements AfterViewInit, OnInit {
       },
       (error: HttpErrorResponse) => {}
     );
-    
+
     this.route.data.pipe(map((data) => data['editable'])).subscribe(
       (isEditable: boolean) => {
-        if(isEditable !== undefined) {
+        if (isEditable !== undefined) {
           this.editable = isEditable;
           this.generateSplit();
         } else {
@@ -256,12 +256,11 @@ export class BillEditComponent implements AfterViewInit, OnInit {
       openItemEditDialog(this.dialog, this.selection.selected[0], [
         ...this.participants,
       ]).subscribe((res: Item) => {
-        
         if (res !== null) {
           let temp = this.dataSource.data;
           let itr = 0;
-          for(let itm of temp) {
-            if(itm.itemId === res.itemId) {
+          for (let itm of temp) {
+            if (itm.itemId === res.itemId) {
               break;
             }
             itr++;
@@ -272,7 +271,6 @@ export class BillEditComponent implements AfterViewInit, OnInit {
           this.bill.items = temp;
           this.dataSource.data = this.bill.items;
         }
-
       });
     } else {
       this.notify.openSnackBar('Please Add Participants');
@@ -280,7 +278,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   }
 
   isEditable() {
-    return this.editable? '': 'disabled';
+    return this.editable ? '' : 'disabled';
   }
 
   getIsItemSelected() {
@@ -303,11 +301,9 @@ export class BillEditComponent implements AfterViewInit, OnInit {
 
     if (typeof date === 'string') {
       let [day, month, year] = date.split('/');
-      formattedDate = new Date(`${year}-${month}-${day}`);
+      formattedDate = `${day}/${month}/${year}`;
     } else {
-      formattedDate = new Intl.DateTimeFormat('en-GB').format(
-        new Date(date)
-      );
+      formattedDate = new Intl.DateTimeFormat('en-GB').format(new Date(date));
     }
 
     this.bill.billDate = formattedDate;
