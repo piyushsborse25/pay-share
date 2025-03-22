@@ -35,7 +35,7 @@ import { Split } from '../entities/Split';
 import { openItemViewDialog } from '../dialogs/item-list/item-list.component';
 import { openItemEditDialog } from '../dialogs/item-add/item-add.component';
 import { openConfirmDialog } from '../dialogs/confirm/confirm.component';
-import { log } from 'node:console';
+import { ExtraPrice } from '../entities/ExtraPrice';
 
 @Component({
   selector: 'app-bill-edit',
@@ -58,6 +58,7 @@ import { log } from 'node:console';
     MatChipsModule,
     MatAutocompleteModule,
     MatToolbarModule,
+    MatChipsModule,
   ],
   templateUrl: './bill-edit.component.html',
   styleUrl: './bill-edit.component.css',
@@ -72,12 +73,20 @@ export class BillEditComponent implements AfterViewInit, OnInit {
 
   isItemSelected: boolean = false;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('itemsPaginator') paginator: MatPaginator;
+  @ViewChild('extrasPaginator') paginatorExtras: MatPaginator;
+
   @ViewChild(MatSort) sort: MatSort;
 
   dataSource: MatTableDataSource<Item>;
+  dataSourceExtras: MatTableDataSource<ExtraPrice>;
+
   selection = new SelectionModel<Item>(true, []);
+  selectionExtras = new SelectionModel<ExtraPrice>(true, []);
+
   displayedColumns = ['select', 'itemId', 'itemName', 'itemPrice', 'people'];
+
+  options: string[] = ['DISCOUNT', 'TAX', 'EXTRA_CHARGES', 'CASHBACK'];
 
   newItem: Item = {
     itemId: -1,
@@ -102,9 +111,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.route.data.pipe(map((data) => data['bill'])).subscribe(
       (res: Bill) => {
-        this.bill = res;
-        this.participants = new Set<string>(this.bill.participants);
-        this.dataSource = new MatTableDataSource<Item>(this.bill.items);
+        this.updateBill(res);
       },
       (error: HttpErrorResponse) => {}
     );
@@ -124,6 +131,18 @@ export class BillEditComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+    this.dataSourceExtras.paginator = this.paginatorExtras;
+  }
+
+  updateBill(bill: Bill) {
+    this.bill = bill;
+    this.participants = new Set<string>(this.bill.participants);
+    this.dataSource = new MatTableDataSource<Item>(this.bill.items);
+    this.dataSourceExtras = new MatTableDataSource<ExtraPrice>(
+      this.bill.extraPrices
+    );
+    this.selection.clear();
+    this.selectionExtras.clear();
   }
 
   remove(item: string): void {
@@ -155,6 +174,20 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     );
   }
 
+  removeExtra() {
+    let extras: ExtraPrice[] = this.dataSourceExtras.data;
+
+    for (let extra of this.selectionExtras.selected) {
+      let idx = extras.indexOf(extra);
+      if (idx !== -1) {
+        extras.splice(idx, 1);
+      }
+    }
+
+    this.dataSourceExtras.data = extras;
+    this.selectionExtras.deselect(...this.selectionExtras.selected);
+  }
+
   getDate(dateStr: string): any {
     if (typeof dateStr === 'string') {
       const [day, month, year] = dateStr.split('/').map(Number);
@@ -165,9 +198,18 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     return dateStr;
   }
 
-  getItemIdx(i: number): number {
+  getItemIdxItems(i: number): number {
     if (this.paginator !== undefined) {
       return this.paginator.pageIndex * this.paginator.pageSize + (i + 1);
+    }
+    return i + 1;
+  }
+
+  getItemIdxExtras(i: number): number {
+    if (this.paginatorExtras !== undefined) {
+      return (
+        this.paginatorExtras.pageIndex * this.paginatorExtras.pageSize + (i + 1)
+      );
     }
     return i + 1;
   }
@@ -178,26 +220,48 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     return people.join(', ');
   }
 
-  isAllSelected(): boolean {
+  isAllSelectedItems(): boolean {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  toggleAllSelection(): void {
-    if (this.isAllSelected()) {
+  isAllSelectedExtras(): boolean {
+    const numSelected = this.selectionExtras.selected.length;
+    const numRows = this.dataSourceExtras.data.length;
+    return numSelected === numRows;
+  }
+
+  toggleAllSelectionItems(): void {
+    if (this.isAllSelectedItems()) {
       this.selection.clear();
     } else {
       this.selection.select(...this.dataSource.data);
     }
   }
 
-  toggleSingle(dmItem: Item): void {
+  toggleAllSelectionExtras(): void {
+    if (this.isAllSelectedExtras()) {
+      this.selectionExtras.clear();
+    } else {
+      this.selectionExtras.select(...this.dataSourceExtras.data);
+    }
+  }
+
+  toggleSingleItems(dmItem: Item): void {
     this.selection.toggle(dmItem);
   }
 
-  shouldEnable(dmItem: Item): string {
+  toggleSingleExtras(dmExtra: ExtraPrice): void {
+    this.selectionExtras.toggle(dmExtra);
+  }
+
+  shouldEnableItems(dmItem: Item): string {
     return this.selection.isSelected(dmItem) ? '' : 'disabled';
+  }
+
+  shouldEnableExtras(dmExtra: ExtraPrice): string {
+    return this.selectionExtras.isSelected(dmExtra) ? '' : 'disabled';
   }
 
   comparePeopleFn(x: any, y: any): boolean {
@@ -222,8 +286,14 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     console.log($event);
   }
 
-  getIndex(idx: number): number {
+  getIndexItems(idx: number): number {
     return this.paginator.pageSize * this.paginator.pageIndex + (idx + 1);
+  }
+
+  getIndexExtras(idx: number): number {
+    return (
+      this.paginatorExtras.pageSize * this.paginatorExtras.pageIndex + (idx + 1)
+    );
   }
 
   addItem() {
@@ -241,6 +311,17 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     }
   }
 
+  addExtra() {
+    const emptyExtraPrice: ExtraPrice = {
+      name: '',
+      value: 0,
+      type: 'EXTRA_CHARGES', // Default type, can be changed dynamically
+    };
+
+    this.bill.extraPrices = [emptyExtraPrice, ...this.dataSourceExtras.data];
+    this.dataSourceExtras.data = this.bill.extraPrices;
+  }
+
   enableEditItem() {
     let isOnlyOneSelected: boolean = this.selection.selected.length === 1;
     return isOnlyOneSelected ? '' : 'disabled';
@@ -248,6 +329,11 @@ export class BillEditComponent implements AfterViewInit, OnInit {
 
   enableDownloadItem() {
     let isOnlyOneSelected: boolean = this.selection.selected.length >= 1;
+    return isOnlyOneSelected ? '' : 'disabled';
+  }
+
+  enableDeleteExtra() {
+    let isOnlyOneSelected: boolean = this.selectionExtras.selected.length >= 1;
     return isOnlyOneSelected ? '' : 'disabled';
   }
 
@@ -311,6 +397,7 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     this.billService.save(this.bill).subscribe(
       (result: Bill) => {
         this.notify.openSnackBar('Bill Saved Successfully');
+        this.updateBill(result);
       },
       (error: HttpErrorResponse) => {
         this.notify.openSnackBar(error.error['errorMessage']);

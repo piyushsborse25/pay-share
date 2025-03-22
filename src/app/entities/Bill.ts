@@ -1,3 +1,4 @@
+import { ExtraPrice } from "./ExtraPrice";
 import { Item } from "./Item";
 
 export interface Bill {
@@ -10,6 +11,7 @@ export interface Bill {
   time: string;
   cashier: string;
   items: Item[];
+  extraPrices: ExtraPrice[],
   participants: string[];
   paidBy: string,
   totalItems: number;

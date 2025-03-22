@@ -48,9 +48,9 @@
     <!-- Bill Date Column -->
     <ng-container matColumnDef="billDate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Bill Date</th>
-      <td mat-cell *matCellDef="let element" [ngClass]="shouldEnable(element)">
+      <td mat-cell *matCellDef="let element" [ngClass]="'disabled'">
         <mat-form-field class="w-100">
-          <input matInput [(ngModel)]="element.billDate" placeholder="Date" />
+          <input matInput [value]="formatReadableDate(element.billDate)" placeholder="Date" />
         </mat-form-field>
       </td>
     </ng-container>

@@ -19,7 +19,7 @@
   display: grid;
   gap: 0.3rem;
   padding: 0.5rem 0;
-  grid-template-areas: "tool-bar" "users" "top-area" "items" "action" "result";
+  grid-template-areas: "tool-bar" "users" "top-area" "items" "extras" "action" "result";
 }
 
 .toolbar {
@@ -56,6 +56,10 @@
 
 .items {
   grid-area: items;
+}
+
+.extras {
+  grid-area: extras;
 }
 
 .items .container {

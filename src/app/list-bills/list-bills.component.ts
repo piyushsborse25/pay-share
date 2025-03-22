@@ -102,6 +102,18 @@ export class ListBillsComponent implements AfterViewInit, OnInit {
     );
   }
 
+  formatReadableDate(dateStr: string): string {
+    const [day, month, year] = dateStr.split('/').map(Number);
+    const date = new Date(year, month - 1, day); // Month is 0-based in JS
+
+    return new Intl.DateTimeFormat('en-IN', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+      weekday: 'long',
+    }).format(date);
+  }
+
   enableEditBill() {
     let isOnlyOneSelected: boolean = this.selection.selected.length === 1;
     return isOnlyOneSelected ? '' : 'disabled';
