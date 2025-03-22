@@ -7,7 +7,8 @@ echo Script started at %date% %time% >> script.log
 
 REM Step 1: Run npm start (Node.js application) in detached mode without opening a new CMD window
 echo Starting the Node.js application...
-start /b npm start
+cd "D:\Angular Projects\payshare"
+start /b node server.js
 if %errorlevel% neq 0 (
     echo ERROR: npm start failed. Exiting... >> script.log
     exit /b 1
