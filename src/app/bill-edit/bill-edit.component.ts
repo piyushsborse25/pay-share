@@ -175,17 +175,23 @@ export class BillEditComponent implements AfterViewInit, OnInit {
   }
 
   removeExtra() {
-    let extras: ExtraPrice[] = this.dataSourceExtras.data;
+    openConfirmDialog(this.dialog, 'This will delete the Extra Charge.').subscribe(
+      (del: boolean) => {
+        if (del) {
+          let extras: ExtraPrice[] = this.dataSourceExtras.data;
 
-    for (let extra of this.selectionExtras.selected) {
-      let idx = extras.indexOf(extra);
-      if (idx !== -1) {
-        extras.splice(idx, 1);
+          for (let extra of this.selectionExtras.selected) {
+            let idx = extras.indexOf(extra);
+            if (idx !== -1) {
+              extras.splice(idx, 1);
+            }
+          }
+
+          this.dataSourceExtras.data = extras;
+          this.selectionExtras.deselect(...this.selectionExtras.selected);
+        }
       }
-    }
-
-    this.dataSourceExtras.data = extras;
-    this.selectionExtras.deselect(...this.selectionExtras.selected);
+    );
   }
 
   getDate(dateStr: string): any {

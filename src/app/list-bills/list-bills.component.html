@@ -1,5 +1,4 @@
 <div class="container-fluid mat-elevation-z8">
-
   <div class="toolbar">
     <mat-toolbar>
       <button mat-icon-button matTooltip="View Bill" [ngClass]="enableEditBill()" [matTooltipPosition]="'above'"
@@ -32,15 +31,17 @@
     <!-- Bill ID Column -->
     <ng-container matColumnDef="billId">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Bill ID</th>
-      <td mat-cell *matCellDef="let element; index as i"><mat-chip>{{ getItemIdx(i) }}</mat-chip></td>
+      <td mat-cell *matCellDef="let element; index as i">
+        <mat-chip>{{ getItemIdx(i) }}</mat-chip>
+      </td>
     </ng-container>
 
     <!-- Store Column -->
     <ng-container matColumnDef="store">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Store</th>
-      <td mat-cell *matCellDef="let element" [ngClass]="shouldEnable(element)">
+      <td mat-cell *matCellDef="let element" [ngClass]="'disabled'">
         <mat-form-field class="w-100">
-          <input matInput [(ngModel)]="element.store" placeholder="Store Name" />
+          <input matInput [value]="element.store" placeholder="Store Name" />
         </mat-form-field>
       </td>
     </ng-container>
@@ -58,9 +59,9 @@
     <!-- Total Items Column -->
     <ng-container matColumnDef="totalItems">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Items</th>
-      <td mat-cell *matCellDef="let element" [ngClass]="shouldEnable(element)">
+      <td mat-cell *matCellDef="let element" [ngClass]="'disabled'">
         <mat-form-field class="w-100">
-          <input matInput type="number" [(ngModel)]="element.totalItems" />
+          <input matInput type="number" [value]="element.totalItems" />
         </mat-form-field>
       </td>
     </ng-container>
@@ -68,19 +69,19 @@
     <!-- Total Quantity Column -->
     <ng-container matColumnDef="totalQuantity">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Quantity</th>
-      <td mat-cell *matCellDef="let element" [ngClass]="shouldEnable(element)">
+      <td mat-cell *matCellDef="let element" [ngClass]="'disabled'">
         <mat-form-field class="w-100">
-          <input matInput type="number" [(ngModel)]="element.totalQuantity" />
+          <input matInput type="number" [value]="element.totalQuantity" />
         </mat-form-field>
       </td>
     </ng-container>
 
     <!-- Total Value Column -->
     <ng-container matColumnDef="totalValue">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Value</th>
-      <td mat-cell *matCellDef="let element" [ngClass]="shouldEnable(element)">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Value (₹)</th>
+      <td mat-cell *matCellDef="let element" [ngClass]="'disabled'">
         <mat-form-field class="w-100">
-          <input matInput type="number" [(ngModel)]="element.totalValue" />
+          <input matInput type="text" [value]="'₹ ' + element.totalValue" />
         </mat-form-field>
       </td>
     </ng-container>
