@@ -124,12 +124,19 @@ mat-sidenav {
     align-items: center;
     font-size: medium;
     padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+@keyframes color-change {
+  to {
+    background-color: antiquewhite;
+  }
 }
 
 .nav-bar-extras ul a:hover {
     opacity: 0.8;
     transform: scale(1.02);
-    background-color: antiquewhite;
+    animation: color-change 0.5s ease-in forwards;
 }
 
 /* Close Icon Animation */
