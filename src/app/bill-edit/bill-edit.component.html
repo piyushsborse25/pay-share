@@ -51,8 +51,12 @@
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Bill Time</mat-label>
-          <input type="text" matInput [(ngModel)]="bill.time" name="billTime" />
+          <mat-label>Select Time</mat-label>
+          <mat-select [(ngModel)]="bill.time" name="billTime">
+            <mat-option *ngFor="let time of timeSlots" [value]="time">
+              {{ time }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
 
         <mat-form-field>
@@ -104,9 +108,8 @@
     <!-- Items Table Section -->
     <div class="items">
       <div class="container mat-elevation-z3">
-
         <mat-toolbar [ngClass]="isEditable()">
-          <button style="border: none; background-color: transparent;">
+          <button style="border: none; background-color: transparent">
             <mat-chip>Items Charges</mat-chip>
           </button>
           <button mat-icon-button matTooltip="Add Item" [matTooltipPosition]="'above'" class="toolbar-button"
@@ -132,11 +135,13 @@
           <!-- Select Column -->
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-checkbox (change)="toggleAllSelectionItems()" [checked]="selection.hasValue() && isAllSelectedItems()"
+              <mat-checkbox (change)="toggleAllSelectionItems()"
+                [checked]="selection.hasValue() && isAllSelectedItems()"
                 [indeterminate]="selection.hasValue() && !isAllSelectedItems()"></mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let element">
-              <mat-checkbox (change)="toggleSingleItems(element)" [checked]="selection.isSelected(element)"></mat-checkbox>
+              <mat-checkbox (change)="toggleSingleItems(element)"
+                [checked]="selection.isSelected(element)"></mat-checkbox>
             </td>
           </ng-container>
 
@@ -189,7 +194,8 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
-        <mat-paginator #itemsPaginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+        <mat-paginator #itemsPaginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="5"
+          showFirstLastButtons></mat-paginator>
       </div>
     </div>
 
@@ -197,7 +203,7 @@
     <div class="extras">
       <div class="container mat-elevation-z3">
         <mat-toolbar [ngClass]="isEditable()">
-          <button style="border: none; background-color: transparent;">
+          <button style="border: none; background-color: transparent">
             <mat-chip>Extra Charges</mat-chip>
           </button>
           <button mat-icon-button matTooltip="Add Extra Charge" [matTooltipPosition]="'above'" class="toolbar-button"
@@ -215,11 +221,14 @@
           <!-- Select Column -->
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-checkbox (change)="toggleAllSelectionExtras()" [checked]="selectionExtras.hasValue() && isAllSelectedExtras()"
-                [indeterminate]="selectionExtras.hasValue() && !isAllSelectedExtras()"></mat-checkbox>
+              <mat-checkbox (change)="toggleAllSelectionExtras()"
+                [checked]="selectionExtras.hasValue() && isAllSelectedExtras()" [indeterminate]="
+                  selectionExtras.hasValue() && !isAllSelectedExtras()
+                "></mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let element">
-              <mat-checkbox (change)="toggleSingleExtras(element)" [checked]="selectionExtras.isSelected(element)"></mat-checkbox>
+              <mat-checkbox (change)="toggleSingleExtras(element)"
+                [checked]="selectionExtras.isSelected(element)"></mat-checkbox>
             </td>
           </ng-container>
 
@@ -233,7 +242,9 @@
 
           <!-- Extras Name Column -->
           <ng-container matColumnDef="itemName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Extras Name</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Extras Name
+            </th>
             <td mat-cell *matCellDef="let element" [ngClass]="shouldEnableExtras(element)">
               <mat-form-field class="mt-3 w-100">
                 <input matInput type="text" [(ngModel)]="element.name" />
@@ -255,9 +266,7 @@
 
           <!-- Extras Column -->
           <ng-container matColumnDef="people">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-              Extras
-            </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Extras</th>
             <td mat-cell *matCellDef="let element" [ngClass]="shouldEnableExtras(element)">
               <mat-form-field class="mt-3 w-100">
                 <mat-select [(ngModel)]="element.type">
@@ -286,8 +295,10 @@
             <i class="fa-regular fa-circle-user"></i>
           </div>
           <div class="card-content">
-            <h3 class="card-title">{{ split.name || 'N/A' }}</h3>
-            <p class="card-detail"><strong>Items: {{ split.itemcount || 0 }}</strong></p>
+            <h3 class="card-title">{{ split.name || "N/A" }}</h3>
+            <p class="card-detail">
+              <strong>Items: {{ split.itemcount || 0 }}</strong>
+            </p>
             <p class="card-detail">
               <strong>Split:&nbsp;</strong>
               <span class="split-amount">₹ {{ split.split.toFixed(2) || 0 }}</span>
@@ -295,7 +306,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>

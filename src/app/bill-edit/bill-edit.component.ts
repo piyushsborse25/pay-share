@@ -88,6 +88,9 @@ export class BillEditComponent implements AfterViewInit, OnInit {
 
   options: string[] = ['DISCOUNT', 'TAX', 'EXTRA_CHARGES', 'CASHBACK'];
 
+  timeSlots: string[] = [];
+  selectedTime: string = '';
+
   newItem: Item = {
     itemId: -1,
     name: null,
@@ -127,11 +130,42 @@ export class BillEditComponent implements AfterViewInit, OnInit {
       },
       (error: HttpErrorResponse) => {}
     );
+
+    this.generateTimeSlots();
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSourceExtras.paginator = this.paginatorExtras;
+  }
+
+  generateTimeSlots() {
+    const times: string[] = [];
+    let hour = 6;
+    let minute = 0;
+    let meridian = 'AM';
+
+    for (let i = 0; i < 36; i++) {
+      const formattedHour = hour.toString().padStart(2, '0'); // Ensure 2-digit hour
+      const formattedMinute = minute.toString().padStart(2, '0'); // Ensure 2-digit minute
+      times.push(`${formattedHour}:${formattedMinute} ${meridian}`);
+
+      // Increment time
+      minute += 30;
+      if (minute === 60) {
+        minute = 0;
+        hour++;
+
+        if (hour === 12) {
+          meridian = meridian === 'AM' ? 'PM' : 'AM';
+        }
+        if (hour === 13) {
+          hour = 1; // Reset hour after 12
+        }
+      }
+    }
+
+    this.timeSlots = times;
   }
 
   updateBill(bill: Bill) {
@@ -280,6 +314,10 @@ export class BillEditComponent implements AfterViewInit, OnInit {
     });
   }
 
+  clearSplit(): void {
+    this.splits = [];
+  }
+
   downloadBill(): void {
     this.billService.downloadBill(this.bill.billId);
   }
@@ -400,10 +438,13 @@ export class BillEditComponent implements AfterViewInit, OnInit {
 
     this.bill.billDate = formattedDate;
 
+    console.log(this.bill);
+
     this.billService.save(this.bill).subscribe(
       (result: Bill) => {
         this.notify.openSnackBar('Bill Saved Successfully');
         this.updateBill(result);
+        this.clearSplit();
       },
       (error: HttpErrorResponse) => {
         this.notify.openSnackBar(error.error['errorMessage']);
